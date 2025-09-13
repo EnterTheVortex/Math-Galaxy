@@ -1,4 +1,3 @@
-const spaceBg = document.getElementById('space-bg');
 const menu = document.getElementById('menu');
 const gameScreen = document.getElementById('game');
 const answerInput = document.getElementById('answerInput');
@@ -27,19 +26,25 @@ document.querySelectorAll('.key').forEach(key => {
   });
 });
 
-// ----------------- Game Functions -----------------
-function startGame(category) {
+// ----------------- Keyboard input -----------------
+document.addEventListener('keydown', e => {
+  if(gameScreen.classList.contains('hidden')) return; // ignore on menu
+  if(e.key >= '0' && e.key <= '9') answerInput.value += e.key;
+  else if(e.key === 'Backspace') answerInput.value = answerInput.value.slice(0,-1);
+  else if(e.key === 'Enter') checkAnswer();
+});
+
+function startGame(category){
     currentCategory = category;
     score = 0;
     streak = 0;
     scoreDisplay.innerText = score;
     streakDisplay.innerText = streak;
 
-    // hide menu, show game
     menu.classList.add('hidden');
     gameScreen.classList.remove('hidden');
 
-    // show keypad
+    // show keypad only on game screen
     keypad.style.display = 'inline-block';
 
     document.getElementById('categoryTitle').innerText =
@@ -47,29 +52,29 @@ function startGame(category) {
     generateQuestion();
 }
 
-function backToMenu() {
+function backToMenu(){
     gameScreen.classList.add('hidden');
     menu.classList.remove('hidden');
     keypad.style.display = 'none';
 }
 
-function generateQuestion() {
-    let a = Math.floor(Math.random() * 10) + 1;
-    let b = Math.floor(Math.random() * 10) + 1;
+function generateQuestion(){
+    let a = Math.floor(Math.random()*10)+1;
+    let b = Math.floor(Math.random()*10)+1;
     let questionText = '';
 
-    switch(currentCategory) {
+    switch(currentCategory){
         case 'addition':
-            currentAnswer = a + b;
+            currentAnswer = a+b;
             questionText = `${a} + ${b} = ?`;
             break;
         case 'subtraction':
-            if (b > a) [a,b]=[b,a];
-            currentAnswer = a - b;
+            if(b>a)[a,b]=[b,a];
+            currentAnswer = a-b;
             questionText = `${a} - ${b} = ?`;
             break;
         case 'multiplication':
-            currentAnswer = a * b;
+            currentAnswer = a*b;
             questionText = `${a} × ${b} = ?`;
             break;
         case 'division':
@@ -84,22 +89,21 @@ function generateQuestion() {
     feedback.innerText = '';
 }
 
-function checkAnswer() {
-  if(Number(answerInput.value) === currentAnswer) {
-    score += 10 + streak*2;
+function checkAnswer(){
+  if(Number(answerInput.value) === currentAnswer){
+    score += 10+streak*2;
     streak++;
     feedback.innerText = '✅ Correct!';
     feedback.style.color = '#00FF00';
     scoreDisplay.innerText = score;
     streakDisplay.innerText = streak;
 
-    if(score > highScore){
+    if(score>highScore){
       highScore = score;
       localStorage.setItem('mathGalaxyHighScore', highScore);
       document.getElementById('highScore').innerText = highScore;
     }
-
-    setTimeout(generateQuestion, 500);
+    setTimeout(generateQuestion,500);
   } else {
     streak = 0;
     streakDisplay.innerText = streak;
