@@ -1,3 +1,48 @@
+// ----------------- Animated Space Background -----------------
+const spaceBg = document.getElementById('space-bg');
+
+// Stars
+for (let i = 0; i < 100; i++) {
+  const star = document.createElement('div');
+  star.classList.add('star');
+  star.style.top = Math.random() * 100 + '%';
+  star.style.left = Math.random() * 100 + '%';
+  star.style.width = star.style.height = Math.random() * 2 + 1 + 'px';
+  star.style.animationDuration = 2 + Math.random() * 3 + 's';
+  spaceBg.appendChild(star);
+}
+
+// Planets
+const planetColors = ['#ff6b6b', '#6bafff', '#ffdd6b', '#b36bff'];
+for (let i = 0; i < 5; i++) {
+  const planet = document.createElement('div');
+  planet.classList.add('planet');
+  planet.style.width = planet.style.height = 30 + Math.random() * 50 + 'px';
+  planet.style.background = planetColors[Math.floor(Math.random() * planetColors.length)];
+  planet.style.top = Math.random() * 80 + '%';
+  planet.style.left = Math.random() * 90 + '%';
+  planet.style.animationDuration = 20 + Math.random() * 20 + 's';
+  spaceBg.appendChild(planet);
+}
+
+// Comets occasionally
+function createComet() {
+  const comet = document.createElement('div');
+  comet.classList.add('comet');
+  comet.style.top = Math.random() * 50 + '%';
+  comet.style.left = '100%';
+  comet.style.animationDuration = 3 + Math.random() * 2 + 's';
+  spaceBg.appendChild(comet);
+  setTimeout(() => comet.remove(), 5000);
+}
+
+// Spawn comets randomly
+setInterval(() => {
+  if (Math.random() < 0.3) createComet();
+}, 1000);
+
+
+// ----------------- Math Galaxy Game Logic -----------------
 let currentCategory = '';
 let score = 0;
 let streak = 0;
