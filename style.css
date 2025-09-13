@@ -1,49 +1,123 @@
-/* ===== Reset & Base ===== */
-* {
+/* General Reset */
+body {
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+  text-align: center;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  overflow: hidden; /* prevent scrolling */
+  min-height: 100vh;
+  color: #fff;
+  background: radial-gradient(ellipse at bottom, #0b0c20, #1c1f40);
 }
 
-html, body {
-  height: 100%;
-  width: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden;
-  background: #0d0d2b;
-  color: white;
-  display: flex;
+/* Hide elements */
+.hidden {
+  display: none;
+}
+
+/* Titles */
+h1, h2, h3 {
+  margin: 15px 0;
+  text-shadow: 0 0 5px #000;
+}
+
+/* Buttons */
+button, .game-btn {
+  font-size: 1.3em;
+  margin: 8px;
+  padding: 14px 26px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #ff9800, #ffcc00);
+  color: #fff;
+  box-shadow: 0 5px #cc7a00, 0 0 10px rgba(255,255,255,0.5);
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover, .game-btn:hover {
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 0 8px #cc7a00, 0 0 20px rgba(255,255,255,0.7);
+}
+
+button:active {
+  transform: translateY(2px) scale(1);
+}
+
+/* Question */
+#question {
+  font-size: 2em;
+  margin: 20px 0;
+  color: #00ffff;
+}
+
+/* Feedback */
+#feedback {
+  font-size: 1.4em;
+  margin: 12px 0;
+  min-height: 30px;
+}
+
+/* Input */
+#answer {
+  font-size: 1.4em;
+  padding: 10px;
+  width: 120px;
+  text-align: center;
+  border-radius: 8px;
+  border: 2px solid #00ffff;
+  margin-bottom: 15px;
+}
+
+/* Scoreboard */
+#scoreboard, #highScoreContainer, #timerContainer {
+  font-size: 1.2em;
+  margin: 8px 0;
+}
+
+/* Keypad */
+#keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 70px);
+  grid-gap: 10px;
   justify-content: center;
-  align-items: center;
+  margin: 15px auto;
+}
+#keypad .key {
+  font-size: 1.5em;
+  padding: 20px;
+  border-radius: 15px;
+  background: linear-gradient(45deg, #2196f3, #03a9f4);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 3px #0277bd;
+  user-select: none;
+  text-align: center;
+}
+#keypad .key:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px #0277bd;
 }
 
-/* Hide scroll, disable pinch-zoom */
-body {
-  -webkit-touch-callout: none;
-  -webkit-text-size-adjust: none;
-  touch-action: manipulation;
-}
-
-/* ===== Background Layer ===== */
+/* Background container */
 #space-bg {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  z-index: -1;
-  background: radial-gradient(circle at bottom, #0d0d2b, #000010);
   overflow: hidden;
+  z-index: -1;
+  background: radial-gradient(ellipse at bottom, #0b0c20, #1c1f40);
 }
 
 /* Stars */
 .star {
   position: absolute;
-  width: 2px;
-  height: 2px;
+  width: 2px; height: 2px;
   background: white;
   border-radius: 50%;
-  animation: twinkle 2s infinite ease-in-out;
+  opacity: 0.7;
+  animation: twinkle 3s infinite ease-in-out;
 }
-
 @keyframes twinkle {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
@@ -52,145 +126,38 @@ body {
 /* Shooting stars */
 .shooting-star {
   position: absolute;
-  width: 80px;
-  height: 2px;
-  background: linear-gradient(90deg, white, transparent);
-  animation: shoot 10s linear infinite;
+  width: 3px; height: 80px;
+  background: linear-gradient(white, transparent);
+  opacity: 0.8;
+  transform: rotate(45deg);
+  animation: shoot 2s linear infinite;
 }
-
 @keyframes shoot {
   0% { transform: translateX(0) translateY(0) rotate(45deg); opacity: 1; }
-  100% { transform: translateX(-800px) translateY(800px) rotate(45deg); opacity: 0; }
+  100% { transform: translateX(-800px) translateY(400px) rotate(45deg); opacity: 0; }
 }
 
 /* Planets */
 .planet {
   position: absolute;
   border-radius: 50%;
-  box-shadow: inset -10px -10px 20px rgba(0,0,0,0.5),
-              0 0 30px rgba(255,255,255,0.2);
-  animation: rotate 60s linear infinite;
+  opacity: 0.9;
+  box-shadow: inset -10px -10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(255,255,255,0.3);
 }
-
-.planet.rocky {
-  background: radial-gradient(circle at 30% 30%, #b5651d, #4b2e12);
-}
-.planet.gas {
-  background: radial-gradient(circle at 40% 40%, #ffcc00, #ff6600);
-}
-.planet.icy {
-  background: radial-gradient(circle at 30% 30%, #aeefff, #0077b6);
-}
+.planet.rocky { background: radial-gradient(circle, #c2b280, #5c4033); }
+.planet.gas { background: radial-gradient(circle, #ffcc00, #ff6600); }
+.planet.icy { background: radial-gradient(circle, #aeefff, #2196f3); }
 .planet.ringed {
-  background: radial-gradient(circle at 40% 40%, #c3b1e1, #5a4b81);
-  border: 4px solid rgba(255,255,255,0.2);
+  background: radial-gradient(circle, #b5651d, #4e342e);
+  border: 3px solid rgba(200,200,200,0.6);
+  box-shadow: 0 0 15px rgba(200,200,200,0.6);
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-/* ===== UI Containers ===== */
-.hidden { display: none; }
-
-#startMenu, #gameModes, #modeMenu, #settings, #game {
-  text-align: center;
-  max-width: 800px;
-  padding: 20px;
-}
-
-h1, h2 {
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-}
-
-.game-btn {
-  background: linear-gradient(135deg, #6a5acd, #483d8b);
-  border: none;
-  color: white;
-  padding: 15px 30px;
-  margin: 12px;
-  border-radius: 12px;
-  font-size: 1.3em;
-  cursor: pointer;
-  transition: transform 0.2s ease, background 0.3s ease;
-  width: 250px;
-  max-width: 90%;
-}
-.game-btn:hover {
-  transform: scale(1.05);
-  background: linear-gradient(135deg, #7b68ee, #5f4db0);
-}
-
-/* ===== Game Layout ===== */
-#question {
-  font-size: 2.2em;
-  margin: 20px 0;
-}
-
-#answer {
-  padding: 12px;
-  font-size: 1.5em;
-  width: 140px;
-  text-align: center;
-  border-radius: 8px;
-  border: 2px solid #aaa;
-}
-
-#feedback {
-  margin: 12px 0;
-  font-size: 1.3em;
-}
-
-#scoreboard {
-  margin-top: 15px;
-  font-size: 1.1em;
-}
-
-#keypad {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(3, 80px);
-  gap: 12px;
-  justify-content: center;
-}
-.key {
-  background: #222;
-  color: white;
-  font-size: 1.5em;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.2s;
-}
-.key:hover {
-  background: #444;
-}
-
-/* ===== Accessibility ===== */
-/* Color schemes */
-body.dark { background: #0d0d2b; color: white; }
-body.highContrast { background: black; color: yellow; }
-
-/* Fonts */
-body.defaultFont { font-family: 'Segoe UI', Tahoma, sans-serif; }
-body.largeFont { font-size: 1.4em; }
-body.lexieFont { font-family: 'OpenDyslexic', Arial, sans-serif; }
-
-/* Motion reduction */
-body.reduce-motion * {
-  animation: none !important;
-  transition: none !important;
-}
-
-/* ===== Animations ===== */
+/* Shake animation for wrong answers */
 .shake {
-  animation: shake 0.4s;
+  animation: shakeAnim 0.4s;
 }
-@keyframes shake {
+@keyframes shakeAnim {
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
   50% { transform: translateX(5px); }
@@ -198,12 +165,31 @@ body.reduce-motion * {
   100% { transform: translateX(0); }
 }
 
-/* ===== Mobile Optimization ===== */
+/* Accessibility: High Contrast */
+body.highContrast {
+  background: #000 !important;
+  color: #fff !important;
+}
+body.highContrast button {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff;
+}
+
+/* Accessibility: Fonts */
+body.largeFont { font-size: 1.4em; }
+body.lexieFont { font-family: 'OpenDyslexic', sans-serif; }
+
+/* Accessibility: Reduce motion */
+body.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Responsive */
 @media (max-width: 600px) {
-  h1 { font-size: 1.6em; }
-  .game-btn { font-size: 1.1em; padding: 12px 18px; width: 90%; }
-  #question { font-size: 1.6em; margin: 10px 0; }
+  #question { font-size: 1.6em; }
   #answer { font-size: 1.2em; width: 100px; }
-  #keypad { grid-template-columns: repeat(3, 60px); gap: 6px; }
-  .key { width: 60px; height: 60px; font-size: 1.2em; padding: 15px; }
+  #keypad { grid-template-columns: repeat(3, 60px); }
+  #keypad .key { font-size: 1.2em; padding: 16px; }
 }
