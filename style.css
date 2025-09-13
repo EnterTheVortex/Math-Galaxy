@@ -8,6 +8,11 @@ body {
   min-height: 100vh;
   background: radial-gradient(circle at top left, #0b0c20, #1c1f40);
   color: #fff;
+  touch-action: manipulation;
+  overscroll-behavior: none;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
 }
 
 .hidden { display: none; }
@@ -36,11 +41,13 @@ button, .game-btn {
   background: linear-gradient(45deg, #ff9800, #ffcc00);
   color: #fff;
   box-shadow: 0 5px #cc7a00, 0 0 15px rgba(255,255,255,0.5);
-  transition: all 0.2s ease-in-out;
+  transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
 }
-button:hover, .game-btn:hover {
-  transform: scale(1.1) translateY(-5px);
-  box-shadow: 0 10px #cc7a00, 0 0 30px rgba(255,255,255,0.8);
+@media (hover: hover) {
+  button:hover, .game-btn:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 10px #cc7a00, 0 0 30px rgba(255,255,255,0.8);
+  }
 }
 
 /* Layout */
@@ -64,11 +71,7 @@ input[type=number] {
 }
 
 /* Question and Score */
-#question {
-  font-size: 2em;
-  margin: 20px 0;
-  color: #00ffff;
-}
+#question { font-size: 2em; margin: 20px 0; color: #00ffff; }
 .score-board { font-size: 1.2em; }
 #categoryTitle { font-size: 2em; color: #ff69b4; }
 
@@ -100,10 +103,7 @@ input[type=number] {
   opacity: 0.8;
   animation: twinkle 3s infinite ease-in-out;
 }
-@keyframes twinkle {
-  0%,100% { opacity: 0.3; }
-  50% { opacity: 1; }
-}
+@keyframes twinkle { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
 
 /* Shooting stars */
 .shooting-star {
@@ -120,80 +120,28 @@ input[type=number] {
 }
 
 /* Planets */
-.planet {
-  position: absolute;
-  border-radius: 50%;
-}
-.planet.rocky {
-  background: radial-gradient(circle at 30% 30%, #d9a066, #5a3e1b);
-  box-shadow: inset -10px -10px 25px rgba(0,0,0,0.6), 0 0 40px rgba(255,200,150,0.4);
-}
-.planet.gas {
-  background: repeating-linear-gradient(
-    90deg,
-    #ffcc66 0 20px,
-    #ff9966 20px 40px,
-    #cc6633 40px 60px
-  );
-  box-shadow: inset -15px -15px 30px rgba(0,0,0,0.4), 0 0 50px rgba(255,200,150,0.5);
-  animation: rotateBands 20s linear infinite;
-}
-@keyframes rotateBands {
-  from { background-position: 0 0; }
-  to   { background-position: 200px 0; }
-}
-.planet.icy {
-  background: radial-gradient(circle at 30% 30%, #ccf2ff, #004466);
-  box-shadow: inset -8px -8px 20px rgba(0,0,0,0.5), 0 0 50px rgba(150,220,255,0.6);
-}
-.planet.ringed {
-  background: radial-gradient(circle at 30% 30%, #ffeecc, #996633);
-  box-shadow: inset -10px -10px 25px rgba(0,0,0,0.5), 0 0 60px rgba(255,220,150,0.5);
-}
-.planet.ringed::before {
-  content: "";
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%) rotate(20deg);
-  width: 200%; height: 30%;
-  border-radius: 50%;
-  background: linear-gradient(to right, rgba(255,255,255,0.4), transparent, rgba(255,255,255,0.4));
-}
+.planet { position: absolute; border-radius: 50%; }
+.planet.rocky { background: radial-gradient(circle at 30% 30%, #d9a066, #5a3e1b); box-shadow: inset -10px -10px 25px rgba(0,0,0,0.6), 0 0 40px rgba(255,200,150,0.4); }
+.planet.gas { background: repeating-linear-gradient(90deg,#ffcc66 0 20px,#ff9966 20 40,#cc6633 40 60); box-shadow: inset -15px -15px 30px rgba(0,0,0,0.4), 0 0 50px rgba(255,200,150,0.5); animation: rotateBands 20s linear infinite; }
+@keyframes rotateBands { from { background-position: 0 0; } to { background-position: 200px 0; } }
+.planet.icy { background: radial-gradient(circle at 30% 30%, #ccf2ff, #004466); box-shadow: inset -8px -8px 20px rgba(0,0,0,0.5),0 0 50px rgba(150,220,255,0.6); }
+.planet.ringed { background: radial-gradient(circle at 30% 30%, #ffeecc,#996633); box-shadow: inset -10px -10px 25px rgba(0,0,0,0.5),0 0 60px rgba(255,220,150,0.5); }
+.planet.ringed::before { content:""; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(20deg); width:200%; height:30%; border-radius:50%; background: linear-gradient(to right, rgba(255,255,255,0.4), transparent, rgba(255,255,255,0.4)); }
 
 /* Keypad */
-#keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 70px);
-  gap: 10px;
-  justify-content: center;
-  margin: 20px auto;
-  max-width: 250px;
-}
-.key {
-  padding: 15px;
-  background: #222;
-  border: 2px solid #555;
-  border-radius: 10px;
-  font-size: 1.2em;
-  color: white;
-}
+#keypad { display: grid; grid-template-columns: repeat(3, 70px); gap: 10px; justify-content: center; margin: 20px auto; max-width: 250px; }
+.key { padding: 15px; background: #222; border: 2px solid #555; border-radius: 10px; font-size: 1.2em; color:white; }
 .key:active { background: #444; }
 
 /* Mobile tweaks */
 @media (max-width: 600px) {
   #question { font-size: 1.5em; }
   .glow { font-size: 2em; }
-  button, .game-btn { font-size: 1.5em; padding: 20px 30px; margin: 10px 0; width: 80%; }
-  input[type=number] { width: 80%; font-size: 1.5em; }
-
-  #keypad {
-    grid-template-columns: repeat(3, 80px);
-    gap: 12px;
-  }
+  .game-btn { font-size: 1.5em; padding: 20px 30px; margin: 10px 0; width: 80%; }
+  #keypad { grid-template-columns: repeat(3, 80px); gap: 12px; }
   .key { width: 80px; height: 80px; font-size: 1.4em; }
-
-  /* Hide main title when mobile in game mode */
-  body.mobile-game .glow {
-    display: none;
+    body.mobile-game .glow {
+    display: none; /* hide title during mobile gameplay */
   }
 }
+
