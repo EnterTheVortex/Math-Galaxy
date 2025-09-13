@@ -30,7 +30,7 @@ function openModeMenu(cat){
   menu.classList.add("hidden");
   modeMenu.classList.remove("hidden");
   document.getElementById("modeTitle").innerText =
-    `${cat.charAt(0).toUpperCase()+cat.slice(1)} Mode`;
+    `${cat.charAt(0).toUpperCase() + cat.slice(1)} Mode`;
 }
 
 function goBackToMenu(){
@@ -45,7 +45,7 @@ function startGame(cat, mode){
   modeMenu.classList.add("hidden");
   game.classList.remove("hidden");
   document.getElementById("categoryTitle").innerText =
-    cat.charAt(0).toUpperCase()+cat.slice(1);
+    cat.charAt(0).toUpperCase() + cat.slice(1);
 
   score = 0; streak = 0;
   scoreEl.innerText = score;
@@ -161,7 +161,7 @@ answerInput.addEventListener("keydown", e=>{
   if(e.key === "Enter") checkAnswer();
 });
 
-// Background planets, stars, shooting stars...
+// Background planets, stars, shooting stars
 const spaceBg = document.getElementById("space-bg");
 const planets = [];
 const planetTypes = ["rocky","gas","icy","ringed"];
@@ -182,7 +182,7 @@ for(let i=0; i<5; i++){
   planet.style.top = Math.random()*100+"vh";
   planet.style.left = Math.random()*100+"vw";
   spaceBg.appendChild(planet);
-  planets.push({el: planet, x: parseFloat(planet.style.left), y: parseFloat(planet.style.top), dx: (Math.random()-0.5)*0.02, dy: (Math.random()-0.5)*0.02});
+  planets.push({el: planet, x: parseFloat(planet.style.left), y: parseFloat(planet.style.top), dx: (Math.random()-0.5)*0.2, dy: (Math.random()-0.5)*0.2});
 }
 for(let i=0;i<3;i++){
   let s = document.createElement("div");
