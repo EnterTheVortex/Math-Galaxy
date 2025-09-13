@@ -1,74 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Math Galaxy</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Galaxy</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="space-bg"></div>
 
-<div id="space-bg"></div>
-
-<!-- Main Menu -->
-<div id="menu">
-  <h1 class="title">🌌 Math Galaxy 🌌</h1>
-  <h2>Choose Your Math Adventure:</h2>
-  <div class="buttons">
-    <button class="game-btn" onclick="showModeSelect('addition')">Addition Adventure</button>
-    <button class="game-btn" onclick="showModeSelect('subtraction')">Subtraction Safari</button>
-    <button class="game-btn" onclick="showModeSelect('multiplication')">Multiplication Mayhem</button>
-    <button class="game-btn" onclick="showModeSelect('division')">Division Dash</button>
-  </div>
-</div>
-
-<!-- Mode Select -->
-<div id="modeSelect" class="hidden">
-  <h2 id="modeCategoryTitle"></h2>
-  <button class="game-btn" onclick="startGame(currentCategory,'normal')">Normal Mode</button>
-  <button class="game-btn" onclick="startGame(currentCategory,'highscore')">High Score Mode</button>
-  <button class="game-btn" onclick="backToMenu()">Back</button>
-</div>
-
-<!-- Game Screen -->
-<div id="game" class="hidden">
-  <h2 id="categoryTitle"></h2>
-  <div id="timer" class="hidden">⏳ Time: <span id="timeLeft">60</span>s</div>
-  <div id="question">Question will appear here</div>
-  <div id="answer-container">
-    <input type="text" id="answerInput" placeholder="0" readonly>
-    <div id="keypad">
-      <div class="key-row">
-        <button class="key">1</button>
-        <button class="key">2</button>
-        <button class="key">3</button>
-      </div>
-      <div class="key-row">
-        <button class="key">4</button>
-        <button class="key">5</button>
-        <button class="key">6</button>
-      </div>
-      <div class="key-row">
-        <button class="key">7</button>
-        <button class="key">8</button>
-        <button class="key">9</button>
-      </div>
-      <div class="key-row">
-        <button class="key">0</button>
-        <button class="key" id="backspace">⌫</button>
-        <button class="key" id="enter">✔</button>
-      </div>
+  <!-- Menu Screen -->
+  <div id="menuScreen" class="screen">
+    <h1 class="glow">🌌 Math Galaxy 🌌</h1>
+    <p>Select a category to start your adventure!</p>
+    <div class="buttons">
+      <button onclick="showModeSelect('addition')">Addition Adventure</button>
+      <button onclick="showModeSelect('subtraction')">Subtraction Safari</button>
+      <button onclick="showModeSelect('multiplication')">Multiplication Mayhem</button>
+      <button onclick="showModeSelect('division')">Division Dash</button>
     </div>
   </div>
-  <p id="feedback"></p>
-  <p class="score-board">
-    Score: <span id="score">0</span> |
-    Streak: <span id="streak">0</span> |
-    High Score: <span id="highScore">0</span>
-  </p>
-  <button onclick="backToMenu()" class="game-btn">Back to Menu</button>
-</div>
 
-<script src="script.js"></script>
+  <!-- Mode Select Screen -->
+  <div id="modeScreen" class="screen hidden">
+    <h2 id="modeTitle"></h2>
+    <div class="buttons">
+      <button onclick="startGame(currentCategory, 'normal')">Normal Mode</button>
+      <button onclick="startGame(currentCategory, 'highscore')">High Score Mode</button>
+      <button onclick="backToMenu()">⬅ Back</button>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="gameScreen" class="screen hidden">
+    <h2 id="categoryTitle"></h2>
+    <div class="score-board">
+      <span id="scoreDisplay">Score: 0</span> |
+      <span id="streakDisplay">Streak: 0</span> |
+      <span id="timerDisplay"></span>
+    </div>
+    <div id="question"></div>
+    <input type="number" id="answerInput" placeholder="Answer">
+    <div id="keypad" class="keypad hidden"></div>
+    <div id="feedback"></div>
+    <button onclick="endGame()">End Game</button>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
