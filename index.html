@@ -8,13 +8,13 @@
 </head>
 <body>
 <div id="menu">
-  <h1>🌌 Math Galaxy 🌌</h1>
-  <h2>Choose a Math Adventure:</h2>
+  <h1 class="glow">🌌 Math Galaxy 🌌</h1>
+  <h2>Choose Your Math Adventure:</h2>
   <div class="buttons">
-    <button onclick="startGame('addition')">Addition Adventure</button>
-    <button onclick="startGame('subtraction')">Subtraction Safari</button>
-    <button onclick="startGame('multiplication')">Multiplication Mayhem</button>
-    <button onclick="startGame('division')">Division Dash</button>
+    <button class="game-btn" onclick="startGame('addition')">Addition Adventure</button>
+    <button class="game-btn" onclick="startGame('subtraction')">Subtraction Safari</button>
+    <button class="game-btn" onclick="startGame('multiplication')">Multiplication Mayhem</button>
+    <button class="game-btn" onclick="startGame('division')">Division Dash</button>
   </div>
   <h3>High Score: <span id="highScore">0</span></h3>
 </div>
@@ -23,10 +23,10 @@
   <h2 id="categoryTitle"></h2>
   <div id="question">Question will appear here</div>
   <input type="number" id="answerInput" placeholder="Enter answer">
-  <button id="submitAnswer">Submit</button>
+  <button id="submitAnswer" class="game-btn">Submit</button>
   <p id="feedback"></p>
-  <p>Score: <span id="score">0</span> | Streak: <span id="streak">0</span></p>
-  <button onclick="backToMenu()">Back to Menu</button>
+  <p class="score-board">Score: <span id="score">0</span> | Streak: <span id="streak">0</span></p>
+  <button onclick="backToMenu()" class="game-btn">Back to Menu</button>
 </div>
 
 <script src="script.js"></script>
