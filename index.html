@@ -1,84 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Math Galaxy</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Math Galaxy</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<div id="space-bg"></div>
+<body class="dark defaultFont">
+  <!-- Animated Space Background -->
+  <div id="space-bg"></div>
 
-<h1 class="glow" id="title-glow">🌌 Math Galaxy 🌌</h1>
-
-<!-- Start Menu -->
-<div id="startMenu" class="page">
-  <button class="game-btn" onclick="openGameModes()">🎮 Game Modes</button>
-  <button class="game-btn" onclick="openSettings()">⚙️ Settings</button>
-</div>
-
-<!-- Game Modes -->
-<div id="gameModes" class="page hidden">
-  <h2>Select a Category</h2>
-  <div class="buttons">
-    <button class="game-btn" onclick="openModeMenu('addition')">Addition Adventure</button>
-    <button class="game-btn" onclick="openModeMenu('subtraction')">Subtraction Safari</button>
-    <button class="game-btn" onclick="openModeMenu('multiplication')">Multiplication Mayhem</button>
-    <button class="game-btn" onclick="openModeMenu('division')">Division Dash</button>
+  <!-- ===== Start Menu ===== -->
+  <div id="startMenu">
+    <h1>🌌 Math Galaxy</h1>
+    <button class="game-btn" onclick="openGameModes()">🎮 Game Modes</button>
+    <button class="game-btn" onclick="openSettings()">⚙️ Settings</button>
   </div>
-  <button class="game-btn" onclick="backToStartMenu()">⬅ Back</button>
-</div>
 
-<!-- Mode Menu -->
-<div id="modeMenu" class="page hidden">
-  <h2 id="modeTitle"></h2>
-  <div class="buttons">
+  <!-- ===== Game Modes ===== -->
+  <div id="gameModes" class="hidden">
+    <h2>Select a Category</h2>
+    <button class="game-btn" onclick="openModeMenu('addition')">➕ Addition</button>
+    <button class="game-btn" onclick="openModeMenu('subtraction')">➖ Subtraction</button>
+    <button class="game-btn" onclick="openModeMenu('multiplication')">✖ Multiplication</button>
+    <button class="game-btn" onclick="openModeMenu('division')">➗ Division</button>
+    <br>
+    <button class="game-btn" onclick="backToStartMenu()">⬅️ Back</button>
+  </div>
+
+  <!-- ===== Mode Menu ===== -->
+  <div id="modeMenu" class="hidden">
+    <h2 id="modeTitle">Choose Mode</h2>
     <button class="game-btn" onclick="startGame(currentCategory,'normal')">Normal Mode</button>
     <button class="game-btn" onclick="startGame(currentCategory,'highscore')">High Score Mode</button>
-    <button class="game-btn" onclick="backToGameModes()">⬅ Back</button>
+    <br>
+    <button class="game-btn" onclick="backToGameModes()">⬅️ Back</button>
   </div>
-</div>
 
-<!-- Settings -->
-<div id="settings" class="page hidden">
-  <h2>Accessibility Settings</h2>
+  <!-- ===== Settings ===== -->
+  <div id="settings" class="hidden">
+    <h2>⚙️ Settings</h2>
 
-  <div class="setting-group">
-    <h3>Color Scheme</h3>
+    <!-- Color Scheme -->
+    <h3>🎨 Color Scheme</h3>
     <button class="game-btn" onclick="setColorScheme('dark')">Dark Mode</button>
     <button class="game-btn" onclick="setColorScheme('highContrast')">High Contrast</button>
-  </div>
 
-  <div class="setting-group">
-    <h3>Font Options</h3>
+    <!-- Fonts -->
+    <h3>🔤 Font Options</h3>
     <button class="game-btn" onclick="setFontOption('default')">Default</button>
     <button class="game-btn" onclick="setFontOption('large')">Large Font</button>
     <button class="game-btn" onclick="setFontOption('lexie')">Lexie Font</button>
+
+    <!-- Motion -->
+    <h3>🎬 Motion</h3>
+    <button class="game-btn" onclick="setMotionOption('enabled')">Enable Motion</button>
+    <button class="game-btn" onclick="setMotionOption('reduced')">Reduce Motion</button>
+
+    <br>
+    <button class="game-btn" onclick="backToStartMenu()">⬅️ Back</button>
   </div>
 
-  <div class="setting-group">
-    <h3>Motion Options</h3>
-    <button class="game-btn" onclick="setMotionOption('enabled')">Enable Animations</button>
-    <button class="game-btn" onclick="setMotionOption('reduced')">Reduce Animations</button>
+  <!-- ===== Game Page ===== -->
+  <div id="game" class="hidden">
+    <h2 id="categoryTitle"></h2>
+    <div id="question">Question here</div>
+    <input type="number" id="answer" placeholder="Answer" readonly>
+    <div id="feedback"></div>
+
+    <div id="scoreboard">
+      Score: <span id="score">0</span> | 
+      Streak: <span id="streak">0</span>
+    </div>
+
+    <div id="highScoreContainer" class="hidden">
+      High Score: <span id="highScore">0</span>
+    </div>
+
+    <div id="timerContainer" class="hidden">
+      Time Left: <span id="timer">60</span>s
+    </div>
+
+    <!-- On-screen keypad -->
+    <div id="keypad" class="hidden"></div>
+
+    <br>
+    <button class="game-btn" onclick="goBackToMenu()">⬅️ Exit</button>
   </div>
 
-  <button class="game-btn" onclick="backToStartMenu()">⬅ Back</button>
-</div>
-
-<!-- Game Page -->
-<div id="game" class="page hidden">
-  <h2 id="categoryTitle"></h2>
-  <p id="question"></p>
-  <input type="number" id="answer" placeholder="Answer" readonly>
-  <div id="keypad"></div>
-  <p id="feedback"></p>
-  <p class="score-board">Score: <span id="score">0</span></p>
-  <p class="score-board">Streak: <span id="streak">0</span></p>
-  <p id="timerContainer" class="hidden">⏱ Time left: <span id="timer">60</span>s</p>
-  <p id="highScoreContainer" class="hidden">High Score: <span id="highScore">0</span></p>
-  <button class="game-btn" onclick="endGame()">🏠 Back to Menu</button>
-</div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
