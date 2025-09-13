@@ -1,104 +1,144 @@
+/* General */
 body {
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   min-height: 100vh;
   color: #fff;
-  background: radial-gradient(circle at top left, #0b0c20, #1c1f40);
 }
 
-.title {
+/* Screens */
+.screen {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+}
+.hidden { display: none; }
+
+/* Glowing Title */
+.glow {
   font-size: 3em;
-  margin-top: 20px;
   color: #FFD700;
+  text-shadow: 0 0 5px #FFD700, 0 0 10px #FFDF00, 0 0 20px #FFCC00;
+  animation: glowAnim 2s infinite alternate;
+  margin-top: 20px;
+}
+@keyframes glowAnim {
+  from { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFDF00, 0 0 20px #FFCC00; }
+  to   { text-shadow: 0 0 15px #FFD700, 0 0 25px #FFDF00, 0 0 35px #FFCC00; }
 }
 
-button, .game-btn {
-  font-size: 1.4em;
+/* Buttons */
+button {
+  font-size: 1.3em;
   margin: 10px;
-  padding: 12px 25px;
+  padding: 15px 30px;
   border: none;
-  border-radius: 15px;
+  border-radius: 25px;
   cursor: pointer;
   background: linear-gradient(45deg, #ff9800, #ffcc00);
   color: #fff;
-  box-shadow: 0 3px #cc7a00;
+  box-shadow: 0 5px #cc7a00, 0 0 15px rgba(255,255,255,0.5);
   transition: all 0.2s ease-in-out;
 }
-
-button:hover, .game-btn:hover {
-  transform: scale(1.05) translateY(-3px);
-  box-shadow: 0 6px #cc7a00;
+button:hover {
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 10px #cc7a00, 0 0 30px rgba(255,255,255,0.8);
+}
+button:active {
+  transform: translateY(2px) scale(1);
 }
 
+/* Responsive Layout */
 .buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
+/* Question and Score */
 #question {
   font-size: 2em;
   margin: 20px 0;
   color: #00ffff;
 }
-
-input#answerInput {
+.score-board {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+#categoryTitle {
   font-size: 2em;
+  color: #ff69b4;
+}
+
+/* Feedback */
+#feedback {
+  font-size: 1.5em;
+  height: 40px;
+  margin: 15px 0;
+}
+
+/* Input */
+#answerInput {
+  font-size: 1.3em;
   padding: 10px;
-  width: 120px;
+  width: 150px;
   text-align: center;
   border-radius: 10px;
-  border: 2px solid #fff;
+  border: none;
+  outline: none;
   margin-bottom: 10px;
 }
 
-/* Keypad */
-#keypad { display: none; }
-.key-row { display: flex; justify-content: center; }
-.key {
-  font-size: 1.5em;
-  margin: 5px;
-  padding: 15px 20px;
-  border-radius: 10px;
-  border: none;
-  background: #4444ff;
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 3px #2222aa;
+/* Shake effect */
+.shake {
+  animation: shake 0.3s;
 }
-.key:hover { background: #6666ff; transform: scale(1.05); }
-.key:active { transform: scale(1); box-shadow: 0 2px #2222aa; }
-
-#feedback { font-size: 1.5em; height: 40px; margin: 15px 0; }
-.hidden { display: none; }
-
 @keyframes shake {
   0% { transform: translateX(0); }
-  25% { transform: translateX(-8px); }
-  50% { transform: translateX(8px); }
-  75% { transform: translateX(-8px); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
   100% { transform: translateX(0); }
 }
 
-/* Space Background */
+/* Keypad */
+.keypad {
+  margin: 15px auto;
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  gap: 10px;
+  justify-content: center;
+}
+.keypad button {
+  font-size: 1.2em;
+  padding: 15px;
+  border-radius: 15px;
+  background: #444;
+  color: #fff;
+}
+.keypad button:hover {
+  background: #666;
+}
+
+/* Space background container */
 #space-bg {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   overflow: hidden;
   z-index: -1;
   background: radial-gradient(ellipse at bottom, #0b0c20, #1c1f40);
 }
 
+/* Stars */
 .star {
   position: absolute;
-  border-radius: 50%;
+  width: 2px; height: 2px;
   background: white;
+  border-radius: 50%;
   opacity: 0.8;
   animation: twinkle 2s infinite alternate;
 }
@@ -107,25 +147,61 @@ input#answerInput {
   to   { opacity: 1; }
 }
 
+/* Planets */
 .planet {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff, #555);
-  box-shadow: inset -10px -10px 20px rgba(0,0,0,0.5),
-              inset 5px 5px 15px rgba(255,255,255,0.3),
-              0 0 30px rgba(255,255,255,0.4);
+}
+.planet.rocky {
+  background: radial-gradient(circle at 30% 30%, #d9a066, #5a3e1b);
+  box-shadow: inset -10px -10px 25px rgba(0,0,0,0.6), 0 0 40px rgba(255,200,150,0.4);
+}
+.planet.gas {
+  background: repeating-linear-gradient(90deg, #ffcc66 0 20px, #ff9966 20px 40px, #cc6633 40px 60px);
+  border-radius: 50%;
+  box-shadow: inset -15px -15px 30px rgba(0,0,0,0.4), 0 0 50px rgba(255,200,150,0.5);
+  animation: rotateBands 30s linear infinite;
+}
+@keyframes rotateBands {
+  from { background-position: 0 0; }
+  to   { background-position: 200px 0; }
+}
+.planet.icy {
+  background: radial-gradient(circle at 30% 30%, #ccf2ff, #004466);
+  box-shadow: inset -8px -8px 20px rgba(0,0,0,0.5), 0 0 50px rgba(150,220,255,0.6);
+}
+.planet.ringed {
+  background: radial-gradient(circle at 30% 30%, #ffeecc, #996633);
+  box-shadow: inset -10px -10px 25px rgba(0,0,0,0.5), 0 0 60px rgba(255,220,150,0.5);
+}
+.planet.ringed::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(20deg);
+  width: 200%; height: 30%;
+  border-radius: 50%;
+  background: linear-gradient(to right, rgba(255,255,255,0.4), transparent, rgba(255,255,255,0.4));
 }
 
+/* Shooting stars */
 .shooting-star {
   position: absolute;
-  width: 100px;
-  height: 2px;
+  width: 100px; height: 2px;
   background: linear-gradient(90deg, white, transparent);
   opacity: 0.8;
   transform: rotate(-45deg);
-  animation: shoot 3s linear forwards;
+  animation: shoot 3s linear infinite;
 }
 @keyframes shoot {
   0% { transform: translate(0,0) rotate(-45deg); opacity: 1; }
   100% { transform: translate(-800px,800px) rotate(-45deg); opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  #question { font-size: 1.5em; }
+  .glow { font-size: 2em; }
+  button { font-size: 1.1em; padding: 10px 20px; }
+  #categoryTitle { font-size: 1.6em; }
 }
