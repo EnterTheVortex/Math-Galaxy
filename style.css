@@ -28,6 +28,17 @@ body {
   to   { text-shadow: 0 0 15px #FFD700, 0 0 25px #FFDF00, 0 0 35px #FFCC00; }
 }
 
+/* Color Schemes */
+body.dark { background: radial-gradient(circle at top left,#0b0c20,#1c1f40); color:#fff; }
+body.highContrast { background: black; color: yellow; }
+
+/* Font Options */
+body.defaultFont { font-family: 'Poppins', sans-serif; font-size:16px; }
+body.largeFont { font-family: 'Poppins', sans-serif; font-size:20px; }
+body.lexieFont { font-family: 'Lexie Readable', sans-serif; font-size:18px; }
+
+/* Reduced motion handled via JS */
+
 /* Buttons */
 button, .game-btn {
   font-size: 1.3em;
