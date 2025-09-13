@@ -2,48 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Math Galaxy</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="space-bg"></div>
 
-  <!-- Menu Screen -->
-  <div id="menuScreen" class="screen">
-    <h1 class="glow">🌌 Math Galaxy 🌌</h1>
-    <p>Select a category to start your adventure!</p>
+  <h1 class="glow">🌌 Math Galaxy 🌌</h1>
+
+  <!-- Menu -->
+  <div id="menu" class="page">
+    <h2>Select a Category</h2>
     <div class="buttons">
-      <button onclick="showModeSelect('addition')">Addition Adventure</button>
-      <button onclick="showModeSelect('subtraction')">Subtraction Safari</button>
-      <button onclick="showModeSelect('multiplication')">Multiplication Mayhem</button>
-      <button onclick="showModeSelect('division')">Division Dash</button>
+      <button class="game-btn" onclick="openModeMenu('addition')">Addition Adventure</button>
+      <button class="game-btn" onclick="openModeMenu('subtraction')">Subtraction Safari</button>
+      <button class="game-btn" onclick="openModeMenu('multiplication')">Multiplication Mayhem</button>
+      <button class="game-btn" onclick="openModeMenu('division')">Division Dash</button>
     </div>
   </div>
 
-  <!-- Mode Select Screen -->
-  <div id="modeScreen" class="screen hidden">
+  <!-- Mode Menu -->
+  <div id="modeMenu" class="page hidden">
     <h2 id="modeTitle"></h2>
     <div class="buttons">
-      <button onclick="startGame(currentCategory, 'normal')">Normal Mode</button>
-      <button onclick="startGame(currentCategory, 'highscore')">High Score Mode</button>
-      <button onclick="backToMenu()">⬅ Back</button>
+      <button class="game-btn" onclick="startGame(currentCategory, 'normal')">Normal Mode</button>
+      <button class="game-btn" onclick="startGame(currentCategory, 'highscore')">High Score Mode</button>
+      <button class="game-btn" onclick="goBackToMenu()">⬅ Back</button>
     </div>
   </div>
 
-  <!-- Game Screen -->
-  <div id="gameScreen" class="screen hidden">
+  <!-- Game Page -->
+  <div id="game" class="page hidden">
     <h2 id="categoryTitle"></h2>
-    <div class="score-board">
-      <span id="scoreDisplay">Score: 0</span> |
-      <span id="streakDisplay">Streak: 0</span> |
-      <span id="timerDisplay"></span>
-    </div>
-    <div id="question"></div>
-    <input type="number" id="answerInput" placeholder="Answer">
-    <div id="keypad" class="keypad hidden"></div>
-    <div id="feedback"></div>
-    <button onclick="endGame()">End Game</button>
+    <p id="question"></p>
+    <input type="number" id="answer" placeholder="Answer">
+    <div id="keypad" class="hidden"></div>
+    <p id="feedback"></p>
+    <p class="score-board">Score: <span id="score">0</span></p>
+    <p class="score-board">Streak: <span id="streak">0</span></p>
+    <p id="timerContainer" class="hidden">⏱ Time left: <span id="timer">60</span>s</p>
+    <p id="highScoreContainer" class="hidden">
+      High Score: <span id="highScore">0</span>
+    </p>
+    <button onclick="endGame()">🏠 Back to Menu</button>
   </div>
 
   <script src="script.js"></script>
