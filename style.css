@@ -4,14 +4,12 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
   min-height: 100vh;
   background: radial-gradient(circle at top left, #0b0c20, #1c1f40);
   color: #fff;
   touch-action: manipulation;
   overscroll-behavior: none;
   user-select: none;
-  -webkit-user-select: none;
   overflow: hidden;
 }
 
@@ -51,11 +49,7 @@ button, .game-btn {
 }
 
 /* Layout */
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+.buttons { display: flex; flex-wrap: wrap; justify-content: center; }
 
 /* Input */
 input[type=number] {
@@ -68,6 +62,8 @@ input[type=number] {
   border: none;
   outline: none;
   margin-bottom: 10px;
+  background: #111;
+  color: #fff;
 }
 
 /* Question and Score */
@@ -78,19 +74,15 @@ input[type=number] {
 /* Feedback */
 #feedback { font-size: 1.5em; height: 40px; margin: 15px 0; }
 .shake { animation: shake 0.5s; }
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
-}
+@keyframes shake { 0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);} }
 
 /* Space background */
 #space-bg {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  z-index: -1;
+  top:0; left:0;
+  width:100%; height:100%;
+  overflow:hidden;
+  z-index:-1;
   background: radial-gradient(ellipse at bottom, #0b0c20, #1c1f40);
 }
 
@@ -98,12 +90,11 @@ input[type=number] {
 .star {
   position: absolute;
   width: 2px; height: 2px;
-  background: white;
-  border-radius: 50%;
+  background: white; border-radius: 50%;
   opacity: 0.8;
   animation: twinkle 3s infinite ease-in-out;
 }
-@keyframes twinkle { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+@keyframes twinkle { 0%,100%{opacity:0.3;}50%{opacity:1;} }
 
 /* Shooting stars */
 .shooting-star {
@@ -114,34 +105,28 @@ input[type=number] {
   transform: rotate(-45deg);
   animation: shoot 2s linear infinite;
 }
-@keyframes shoot {
-  from { transform: translate(0,0) rotate(-45deg); opacity:1; }
-  to   { transform: translate(-800px,800px) rotate(-45deg); opacity:0; }
-}
+@keyframes shoot { from{transform:translate(0,0) rotate(-45deg);opacity:1;} to{transform:translate(-800px,800px) rotate(-45deg);opacity:0;} }
 
 /* Planets */
 .planet { position: absolute; border-radius: 50%; }
-.planet.rocky { background: radial-gradient(circle at 30% 30%, #d9a066, #5a3e1b); box-shadow: inset -10px -10px 25px rgba(0,0,0,0.6), 0 0 40px rgba(255,200,150,0.4); }
-.planet.gas { background: repeating-linear-gradient(90deg,#ffcc66 0 20px,#ff9966 20 40,#cc6633 40 60); box-shadow: inset -15px -15px 30px rgba(0,0,0,0.4), 0 0 50px rgba(255,200,150,0.5); animation: rotateBands 20s linear infinite; }
-@keyframes rotateBands { from { background-position: 0 0; } to { background-position: 200px 0; } }
+.planet.rocky { background: radial-gradient(circle at 30% 30%, #d9a066, #5a3e1b); box-shadow: inset -10px -10px 25px rgba(0,0,0,0.6),0 0 40px rgba(255,200,150,0.4); }
+.planet.gas { background: repeating-linear-gradient(90deg,#ffcc66 0 20px,#ff9966 20 40,#cc6633 40 60); box-shadow: inset -15px -15px 30px rgba(0,0,0,0.4),0 0 50px rgba(255,200,150,0.5); animation: rotateBands 20s linear infinite; }
+@keyframes rotateBands { from{background-position:0 0;} to{background-position:200px 0;} }
 .planet.icy { background: radial-gradient(circle at 30% 30%, #ccf2ff, #004466); box-shadow: inset -8px -8px 20px rgba(0,0,0,0.5),0 0 50px rgba(150,220,255,0.6); }
 .planet.ringed { background: radial-gradient(circle at 30% 30%, #ffeecc,#996633); box-shadow: inset -10px -10px 25px rgba(0,0,0,0.5),0 0 60px rgba(255,220,150,0.5); }
 .planet.ringed::before { content:""; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(20deg); width:200%; height:30%; border-radius:50%; background: linear-gradient(to right, rgba(255,255,255,0.4), transparent, rgba(255,255,255,0.4)); }
 
 /* Keypad */
-#keypad { display: grid; grid-template-columns: repeat(3, 70px); gap: 10px; justify-content: center; margin: 20px auto; max-width: 250px; }
-.key { padding: 15px; background: #222; border: 2px solid #555; border-radius: 10px; font-size: 1.2em; color:white; }
-.key:active { background: #444; }
+#keypad { display:grid; grid-template-columns:repeat(3,70px); gap:10px; justify-content:center; margin:20px auto; max-width:250px; }
+.key { padding:15px; background:#222; border:2px solid #555; border-radius:10px; font-size:1.2em; color:white; }
+.key:active { background:#444; }
 
 /* Mobile tweaks */
-@media (max-width: 600px) {
-  #question { font-size: 1.5em; }
-  .glow { font-size: 2em; }
-  .game-btn { font-size: 1.5em; padding: 20px 30px; margin: 10px 0; width: 80%; }
-  #keypad { grid-template-columns: repeat(3, 80px); gap: 12px; }
-  .key { width: 80px; height: 80px; font-size: 1.4em; }
-    body.mobile-game .glow {
-    display: none; /* hide title during mobile gameplay */
-  }
+@media(max-width:600px){
+  #question{font-size:1.5em;margin:10px 0;}
+  #categoryTitle{font-size:1.8em;margin:5px 0;}
+  .game-btn{font-size:1.4em;padding:15px 25px;margin:8px 0;width:90%;}
+  #keypad{grid-template-columns:repeat(3,70px);gap:8px;max-width:240px;margin:15px auto;}
+  .key{width:70px;height:70px;font-size:1.2em;}
+  body.mobile-game .glow{display:none;}
 }
-
