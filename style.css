@@ -1,53 +1,115 @@
+/* General Styles */
 body {
   font-family: 'Comic Sans MS', cursive, sans-serif;
   text-align: center;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  color: #fff;
   margin: 0;
   padding: 0;
+  background: radial-gradient(circle at top left, #1b2735, #090a0f);
+  color: #fff;
+  overflow-x: hidden;
 }
 
-.hidden { display: none; }
-
-h1 {
+/* Glow Title */
+.glow {
   font-size: 3em;
-  margin-top: 20px;
-  color: #FFD700;
-  text-shadow: 2px 2px 5px #000;
+  color: #ffd700;
+  text-shadow: 0 0 5px #ffd700, 0 0 10px #ffdf00, 0 0 20px #ffcc00, 0 0 40px #ff9900;
+  animation: glowAnim 2s infinite alternate;
 }
 
-button {
-  font-size: 1.2em;
+@keyframes glowAnim {
+  from { text-shadow: 0 0 5px #ffd700, 0 0 10px #ffdf00, 0 0 20px #ffcc00, 0 0 40px #ff9900; }
+  to   { text-shadow: 0 0 15px #ffd700, 0 0 25px #ffdf00, 0 0 35px #ffcc00, 0 0 60px #ff9900; }
+}
+
+/* Buttons */
+button, .game-btn {
+  font-size: 1.3em;
   margin: 10px;
-  padding: 10px 20px;
+  padding: 15px 30px;
   border: none;
-  border-radius: 10px;
+  border-radius: 15px;
   cursor: pointer;
   background-color: #ff9800;
   color: #fff;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 5px #cc7a00;
 }
 
-button:hover {
-  transform: scale(1.1);
+button:hover, .game-btn:hover {
+  transform: translateY(-5px) scale(1.1);
   background-color: #ffa733;
+  box-shadow: 0 10px #cc7a00;
 }
 
+button:active, .game-btn:active {
+  transform: translateY(2px) scale(1);
+  box-shadow: 0 3px #cc7a00;
+}
+
+/* Hidden */
+.hidden { display: none; }
+
+/* Question Display */
 #question {
   font-size: 2em;
   margin: 20px 0;
+  color: #00ffff;
 }
 
+/* Input */
+input[type=number] {
+  font-size: 1.3em;
+  padding: 10px;
+  width: 120px;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+/* Feedback */
 #feedback {
   font-size: 1.5em;
-  height: 30px;
+  height: 40px;
+  margin: 15px 0;
 }
 
-input[type=number] {
+/* Scoreboard */
+.score-board {
   font-size: 1.2em;
-  padding: 5px;
-  width: 100px;
-  text-align: center;
-  border-radius: 5px;
-  border: none;
+  margin-top: 10px;
+}
+
+/* Buttons Container */
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Game Category Title */
+#categoryTitle {
+  font-size: 2.5em;
+  color: #ff69b4;
+  margin: 10px 0;
+}
+
+/* Background stars (simple animated effect) */
+body::before {
+  content: '';
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  background: transparent url('https://i.ibb.co/YR8qQkH/stars.png') repeat;
+  animation: moveStars 60s linear infinite;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  opacity: 0.3;
+}
+
+@keyframes moveStars {
+  from { transform: translate(0,0); }
+  to { transform: translate(-100px, -200px); }
 }
