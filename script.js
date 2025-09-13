@@ -8,14 +8,13 @@ const categories = {
   division: "÷"
 };
 
-// Page elements
+// Elements
 const startMenu = document.getElementById("startMenu");
 const gameModes = document.getElementById("gameModes");
 const modeMenu = document.getElementById("modeMenu");
 const settings = document.getElementById("settings");
 const game = document.getElementById("game");
 
-// Game elements
 const questionEl = document.getElementById("question");
 const answerInput = document.getElementById("answer");
 const feedback = document.getElementById("feedback");
@@ -27,7 +26,6 @@ const timerContainer = document.getElementById("timerContainer");
 const timerEl = document.getElementById("timer");
 const keypad = document.getElementById("keypad");
 
-// Helpers
 function isMobile() { return window.innerWidth <= 600; }
 
 // Navigation
@@ -44,14 +42,18 @@ function hideAllPages(){
   game.classList.add("hidden");
 }
 
-let currentMode = "normal";
-
 function openModeMenu(cat){
   currentCategory = cat;
   hideAllPages();
   modeMenu.classList.remove("hidden");
   document.getElementById("modeTitle").innerText =
     `${cat.charAt(0).toUpperCase() + cat.slice(1)} Mode`;
+}
+
+function goBackToMenu(){
+  clearInterval(timerInterval);
+  hideAllPages();
+  startMenu.classList.remove("hidden");
 }
 
 function startGame(cat, mode){
@@ -63,7 +65,6 @@ function startGame(cat, mode){
   score = 0; streak = 0;
   scoreEl.innerText = score;
   streakEl.innerText = streak;
-  currentMode = mode;
 
   if(mode === "highscore"){
     timeLeft = 60;
@@ -86,18 +87,20 @@ function startGame(cat, mode){
     highScoreContainer.classList.add("hidden");
   }
 
-  if(isMobile()) document.body.classList.add("mobile-game");
-  else document.body.classList.remove("mobile-game");
+  if(isMobile()) {
+    answerInput.setAttribute("readonly", true);
+  } else {
+    answerInput.removeAttribute("readonly");
+  }
 
   generateQuestion();
   setupKeypad();
 }
 
 function endGame(){
+  clearInterval(timerInterval);
   hideAllPages();
   startMenu.classList.remove("hidden");
-  clearInterval(timerInterval);
-  document.body.classList.remove("mobile-game");
 }
 
 function generateQuestion(){
@@ -117,7 +120,6 @@ function generateQuestion(){
   questionEl.dataset.answer = ans;
   answerInput.value = "";
 
-  // Only focus input on desktop (avoid mobile keyboard)
   if(!isMobile()) answerInput.focus();
 }
 
@@ -132,7 +134,7 @@ function checkAnswer(){
     scoreEl.innerText = score;
     streakEl.innerText = streak;
 
-    if(currentMode === "highscore"){
+    if(!highScoreContainer.classList.contains("hidden")){
       let key = `mathGalaxyHighScore_${currentCategory}`;
       if(score > highScore){
         highScore = score;
@@ -140,23 +142,46 @@ function checkAnswer(){
         highScoreEl.innerText = highScore;
       }
     }
-
     setTimeout(generateQuestion,500);
   } else {
     streak = 0;
     streakEl.innerText = streak;
     feedback.innerText = "❌ Wrong!";
     feedback.style.color = "#FF4444";
-
     answerInput.classList.add("shake");
     setTimeout(()=>{
       answerInput.classList.remove("shake");
       answerInput.value = "";
-    },500);
+    },400);
   }
 }
 
-// Accessibility Options
+// Keypad
+function setupKeypad(){
+  keypad.innerHTML = "";
+  const keys = ["1","2","3","4","5","6","7","8","9","0","←","✔"];
+  keys.forEach(k=>{
+    let keyEl = document.createElement("div");
+    keyEl.classList.add("key");
+    keyEl.innerText = k;
+    const handleKey = ()=>{
+      if(k==="←"){ answerInput.value = answerInput.value.slice(0,-1); }
+      else if(k==="✔"){ checkAnswer(); }
+      else { answerInput.value += k; }
+    };
+    keyEl.addEventListener("click", handleKey);
+    keyEl.addEventListener("touchstart", handleKey);
+    keypad.appendChild(keyEl);
+  });
+  keypad.classList.remove("hidden");
+}
+
+// Keyboard support (desktop)
+answerInput.addEventListener("keydown", e=>{
+  if(e.key === "Enter") checkAnswer();
+});
+
+// Accessibility
 function setColorScheme(scheme){
   document.body.classList.remove("dark","highContrast");
   document.body.classList.add(scheme);
@@ -168,15 +193,10 @@ function setFontOption(option){
   localStorage.setItem("mathGalaxyFont",option);
 }
 function setMotionOption(option){
+  if(option==="reduced") document.body.classList.add("reduce-motion");
+  else document.body.classList.remove("reduce-motion");
   localStorage.setItem("mathGalaxyMotion",option);
-  if(option==="reduced"){
-    document.body.classList.add("reduce-motion");
-  } else {
-    document.body.classList.remove("reduce-motion");
-  }
 }
-
-// Load saved accessibility preferences
 document.addEventListener("DOMContentLoaded", ()=>{
   const cs = localStorage.getItem("mathGalaxyColorScheme") || "dark";
   const f = localStorage.getItem("mathGalaxyFont") || "default";
@@ -186,82 +206,46 @@ document.addEventListener("DOMContentLoaded", ()=>{
   setMotionOption(m);
 });
 
-// Keypad
-function setupKeypad(){
-  keypad.innerHTML = "";
-  const keys = ["1","2","3","4","5","6","7","8","9","0","←","✔"];
-  keys.forEach(k=>{
-    let keyEl = document.createElement("div");
-    keyEl.classList.add("key");
-    keyEl.innerText = k;
-    keyEl.addEventListener("click", ()=>{
-      if(k==="←"){ answerInput.value = answerInput.value.slice(0,-1); }
-      else if(k==="✔"){ checkAnswer(); }
-      else { answerInput.value += k; }
-    });
-    keypad.appendChild(keyEl);
-  });
-  keypad.classList.remove("hidden");
-}
-
-// Keyboard input
-answerInput.addEventListener("keydown", e=>{
-  if(e.key === "Enter") checkAnswer();
-});
-
-// Background planets, stars, shooting stars
+// Background
 const spaceBg = document.getElementById("space-bg");
 const planets = [];
 const planetTypes = ["rocky","gas","icy","ringed"];
-
 // Stars
 for(let i=0; i<100; i++){
   let star = document.createElement("div");
   star.classList.add("star");
-  star.style.top = Math.random()*100 + "vh";
-  star.style.left = Math.random()*100 + "vw";
+  star.style.top = Math.random()*window.innerHeight + "px";
+  star.style.left = Math.random()*window.innerWidth + "px";
   spaceBg.appendChild(star);
 }
-
 // Planets
-for(let i=0; i<5; i++){
+for(let i=0; i<6; i++){
   let planet = document.createElement("div");
   planet.classList.add("planet", planetTypes[i % planetTypes.length]);
   let size = 60 + Math.random()*100;
   planet.style.width = size+"px";
   planet.style.height = size+"px";
-
   let x = Math.random()*window.innerWidth;
   let y = Math.random()*window.innerHeight;
   planet.style.left = x+"px";
   planet.style.top = y+"px";
-
   spaceBg.appendChild(planet);
-  planets.push({
-    el: planet,
-    x,
-    y,
-    dx: (Math.random()-0.5)*0.2,
-    dy: (Math.random()-0.5)*0.2
-  });
+  planets.push({el: planet, x, y, dx: (Math.random()-0.5)*0.2, dy: (Math.random()-0.5)*0.2});
 }
-
 // Shooting stars
 for(let i=0;i<3;i++){
   let s = document.createElement("div");
   s.classList.add("shooting-star");
-  s.style.top = Math.random()*50+"vh";
-  s.style.left = (50+Math.random()*50)+"vw";
+  s.style.top = Math.random()*window.innerHeight/2+"px";
+  s.style.left = (50+Math.random()*50)+"%";
   s.style.animationDelay = (i*5)+"s";
   spaceBg.appendChild(s);
 }
-
-// Animate planets
 function animatePlanets(){
   planets.forEach(p=>{
     p.x += p.dx; p.y += p.dy;
-    if(p.x > window.innerWidth) p.x = -100;
-    if(p.y > window.innerHeight) p.y = -100;
+    if(p.x > window.innerWidth) p.x = -150;
+    if(p.y > window.innerHeight) p.y = -150;
     if(p.x < -150) p.x = window.innerWidth;
     if(p.y < -150) p.y = window.innerHeight;
     p.el.style.left = p.x+"px";
