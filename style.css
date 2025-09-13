@@ -1,71 +1,86 @@
-/* General Styles */
+/* General */
 body {
   font-family: 'Comic Sans MS', cursive, sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
-  background: radial-gradient(circle at top left, #1b2735, #090a0f);
-  color: #fff;
   overflow-x: hidden;
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #0b0c20, #1c1f40);
+  color: #fff;
 }
 
-/* Glow Title */
+/* Glowing Title */
 .glow {
   font-size: 3em;
-  color: #ffd700;
-  text-shadow: 0 0 5px #ffd700, 0 0 10px #ffdf00, 0 0 20px #ffcc00, 0 0 40px #ff9900;
+  color: #FFD700;
+  text-shadow: 0 0 5px #FFD700, 0 0 10px #FFDF00, 0 0 20px #FFCC00;
   animation: glowAnim 2s infinite alternate;
+  margin-top: 20px;
 }
 
 @keyframes glowAnim {
-  from { text-shadow: 0 0 5px #ffd700, 0 0 10px #ffdf00, 0 0 20px #ffcc00, 0 0 40px #ff9900; }
-  to   { text-shadow: 0 0 15px #ffd700, 0 0 25px #ffdf00, 0 0 35px #ffcc00, 0 0 60px #ff9900; }
+  from { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFDF00, 0 0 20px #FFCC00; }
+  to   { text-shadow: 0 0 15px #FFD700, 0 0 25px #FFDF00, 0 0 35px #FFCC00; }
 }
 
 /* Buttons */
 button, .game-btn {
-  font-size: 1.3em;
+  font-size: 1.5em;
   margin: 10px;
   padding: 15px 30px;
   border: none;
-  border-radius: 15px;
+  border-radius: 25px;
   cursor: pointer;
-  background-color: #ff9800;
+  background: linear-gradient(45deg, #ff9800, #ffcc00);
   color: #fff;
+  box-shadow: 0 5px #cc7a00, 0 0 15px rgba(255,255,255,0.5);
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 5px #cc7a00;
 }
 
 button:hover, .game-btn:hover {
-  transform: translateY(-5px) scale(1.1);
-  background-color: #ffa733;
-  box-shadow: 0 10px #cc7a00;
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 10px #cc7a00, 0 0 30px rgba(255,255,255,0.8);
 }
 
 button:active, .game-btn:active {
   transform: translateY(2px) scale(1);
-  box-shadow: 0 3px #cc7a00;
 }
 
-/* Hidden */
-.hidden { display: none; }
+/* Responsive Layout */
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-/* Question Display */
+input[type=number] {
+  font-size: 1.3em;
+  padding: 10px;
+  width: 40%;
+  max-width: 150px;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+/* Question and Score */
 #question {
   font-size: 2em;
   margin: 20px 0;
   color: #00ffff;
 }
 
-/* Input */
-input[type=number] {
-  font-size: 1.3em;
-  padding: 10px;
-  width: 120px;
-  text-align: center;
-  border-radius: 10px;
-  border: none;
-  outline: none;
+.score-board {
+  font-size: 1.2em;
+}
+
+#categoryTitle {
+  font-size: 2.5em;
+  color: #ff69b4;
+  margin: 10px 0;
 }
 
 /* Feedback */
@@ -75,41 +90,44 @@ input[type=number] {
   margin: 15px 0;
 }
 
-/* Scoreboard */
-.score-board {
-  font-size: 1.2em;
-  margin-top: 10px;
-}
-
-/* Buttons Container */
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-/* Game Category Title */
-#categoryTitle {
-  font-size: 2.5em;
-  color: #ff69b4;
-  margin: 10px 0;
-}
-
-/* Background stars (simple animated effect) */
+/* Space-themed Background Animations */
 body::before {
   content: '';
   position: fixed;
   width: 200%;
   height: 200%;
-  background: transparent url('https://i.ibb.co/YR8qQkH/stars.png') repeat;
-  animation: moveStars 60s linear infinite;
+  background: url('https://i.ibb.co/YR8qQkH/stars.png') repeat;
+  animation: moveStars 120s linear infinite;
   z-index: -1;
   top: 0;
   left: 0;
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 @keyframes moveStars {
   from { transform: translate(0,0); }
-  to { transform: translate(-100px, -200px); }
+  to   { transform: translate(-200px, -400px); }
+}
+
+/* Floating Planets */
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: floatPlanet linear infinite;
+}
+
+@keyframes floatPlanet {
+  0% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-50px) translateX(30px); }
+  100% { transform: translateY(0) translateX(0); }
+}
+
+/* Media Queries for smaller devices */
+@media (max-width: 600px) {
+  #question { font-size: 1.5em; }
+  .glow { font-size: 2em; }
+  button, .game-btn { font-size: 1.2em; padding: 10px 20px; }
+  input[type=number] { width: 60%; }
+  #categoryTitle { font-size: 2em; }
 }
