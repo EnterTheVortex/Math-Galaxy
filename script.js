@@ -13,11 +13,16 @@ for (let i = 0; i < 100; i++) {
 }
 
 // Planets
-const planetColors = ['#ff6b6b', '#6bafff', '#ffdd6b', '#b36bff'];
+const planetColors = [
+  'radial-gradient(circle at 30% 30%, #ff6b6b, #880000)',
+  'radial-gradient(circle at 30% 30%, #6bafff, #004488)',
+  'radial-gradient(circle at 30% 30%, #ffdd6b, #aa8800)',
+  'radial-gradient(circle at 30% 30%, #b36bff, #6600aa)'
+];
 for (let i = 0; i < 5; i++) {
   const planet = document.createElement('div');
   planet.classList.add('planet');
-  planet.style.width = planet.style.height = 30 + Math.random() * 50 + 'px';
+  planet.style.width = planet.style.height = 40 + Math.random() * 50 + 'px';
   planet.style.background = planetColors[Math.floor(Math.random() * planetColors.length)];
   planet.style.top = Math.random() * 80 + '%';
   planet.style.left = Math.random() * 90 + '%';
@@ -31,15 +36,11 @@ function createComet() {
   comet.classList.add('comet');
   comet.style.top = Math.random() * 50 + '%';
   comet.style.left = '100%';
-  comet.style.animationDuration = 3 + Math.random() * 2 + 's';
+  comet.style.animationDuration = 2 + Math.random() * 1 + 's';
   spaceBg.appendChild(comet);
-  setTimeout(() => comet.remove(), 5000);
+  setTimeout(() => comet.remove(), 4000);
 }
-
-// Spawn comets randomly
-setInterval(() => {
-  if (Math.random() < 0.3) createComet();
-}, 1000);
+setInterval(() => { if(Math.random() < 0.3) createComet(); }, 1000);
 
 
 // ----------------- Math Galaxy Game Logic -----------------
@@ -50,12 +51,17 @@ let highScore = localStorage.getItem('mathGalaxyHighScore') || 0;
 
 document.getElementById('highScore').innerText = highScore;
 
+const answerInput = document.getElementById('answerInput');
+const feedback = document.getElementById('feedback');
+const scoreDisplay = document.getElementById('score');
+const streakDisplay = document.getElementById('streak');
+
 function startGame(category) {
     currentCategory = category;
     score = 0;
     streak = 0;
-    document.getElementById('score').innerText = score;
-    document.getElementById('streak').innerText = streak;
+    scoreDisplay.innerText = score;
+    streakDisplay.innerText = streak;
     document.getElementById('categoryTitle').innerText = category.charAt(0).toUpperCase() + category.slice(1);
     document.getElementById('menu').classList.add('hidden');
     document.getElementById('game').classList.remove('hidden');
@@ -67,63 +73,75 @@ function backToMenu() {
     document.getElementById('menu').classList.remove('hidden');
 }
 
+let currentAnswer = 0;
+
 function generateQuestion() {
     let a = Math.floor(Math.random() * 10) + 1;
     let b = Math.floor(Math.random() * 10) + 1;
     let questionText = '';
-    let correctAnswer = 0;
 
     switch(currentCategory) {
         case 'addition':
-            correctAnswer = a + b;
+            currentAnswer = a + b;
             questionText = `${a} + ${b} = ?`;
             break;
         case 'subtraction':
-            if (b > a) [a, b] = [b, a]; // ensure positive
-            correctAnswer = a - b;
+            if (b > a) [a, b] = [b, a];
+            currentAnswer = a - b;
             questionText = `${a} - ${b} = ?`;
             break;
         case 'multiplication':
-            correctAnswer = a * b;
+            currentAnswer = a * b;
             questionText = `${a} × ${b} = ?`;
             break;
         case 'division':
-            correctAnswer = a;
+            currentAnswer = a;
             let product = a * b;
             questionText = `${product} ÷ ${b} = ?`;
             break;
     }
 
     document.getElementById('question').innerText = questionText;
-    document.getElementById('submitAnswer').onclick = function() {
-        checkAnswer(correctAnswer);
-    }
-    document.getElementById('answerInput').value = '';
-    document.getElementById('answerInput').focus();
+    answerInput.value = '';
+    feedback.innerText = '';
 }
 
-function checkAnswer(correctAnswer) {
-    let userAnswer = Number(document.getElementById('answerInput').value);
-    let feedback = document.getElementById('feedback');
-    if (userAnswer === correctAnswer) {
-        score += 10 + streak * 2; // streak bonus
-        streak++;
-        feedback.innerText = '✅ Correct!';
-        feedback.style.color = '#00FF00';
+// ----------------- Keypad Logic -----------------
+document.querySelectorAll('.key').forEach(key => {
+  key.addEventListener('click', () => {
+    if (key.id === 'backspace') {
+      answerInput.value = answerInput.value.slice(0, -1);
+    } else if (key.id === 'enter') {
+      checkAnswer();
     } else {
-        streak = 0;
-        feedback.innerText = `❌ Wrong! Answer: ${correctAnswer}`;
-        feedback.style.color = '#FF4444';
+      answerInput.value += key.innerText;
     }
-    document.getElementById('score').innerText = score;
-    document.getElementById('streak').innerText = streak;
+  });
+});
 
-    // update high score
-    if (score > highScore) {
-        highScore = score;
-        localStorage.setItem('mathGalaxyHighScore', highScore);
-        document.getElementById('highScore').innerText = highScore;
+function checkAnswer() {
+  if (Number(answerInput.value) === currentAnswer) {
+    score += 10 + streak * 2;
+    streak++;
+    feedback.innerText = '✅ Correct!';
+    feedback.style.color = '#00FF00';
+    scoreDisplay.innerText = score;
+    streakDisplay.innerText = streak;
+    if(score > highScore) {
+      highScore = score;
+      localStorage.setItem('mathGalaxyHighScore', highScore);
+      document.getElementById('highScore').innerText = highScore;
     }
-
-    setTimeout(generateQuestion, 1000); // next question after 1s
+    setTimeout(generateQuestion, 500);
+  } else {
+    streak = 0;
+    feedback.innerText = '❌ Wrong!';
+    feedback.style.color = '#FF4444';
+    streakDisplay.innerText = streak;
+    answerInput.classList.add('shake');
+    setTimeout(() => {
+      answerInput.classList.remove('shake');
+      answerInput.value = '';
+    }, 500);
+  }
 }
