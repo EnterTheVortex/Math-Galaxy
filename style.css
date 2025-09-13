@@ -33,10 +33,6 @@ button:hover, .game-btn:hover {
   box-shadow: 0 6px #cc7a00;
 }
 
-button:active, .game-btn:active {
-  transform: translateY(2px) scale(1);
-}
-
 .buttons {
   display: flex;
   flex-wrap: wrap;
@@ -87,7 +83,7 @@ input#answerInput {
   100% { transform: translateX(0); }
 }
 
-/* Space background container */
+/* Space Background */
 #space-bg {
   position: fixed;
   top: 0;
@@ -99,37 +95,27 @@ input#answerInput {
   background: radial-gradient(ellipse at bottom, #0b0c20, #1c1f40);
 }
 
-/* Stars */
 .star {
   position: absolute;
-  width: 2px;
-  height: 2px;
-  background: white;
   border-radius: 50%;
+  background: white;
   opacity: 0.8;
   animation: twinkle 2s infinite alternate;
 }
-
 @keyframes twinkle {
   from { opacity: 0.3; }
   to   { opacity: 1; }
 }
 
-/* Planets */
 .planet {
   position: absolute;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #fff, #555);
-  box-shadow: 0 0 30px rgba(255,255,255,0.5);
-  animation: rotatePlanet 20s linear infinite;
+  box-shadow: inset -10px -10px 20px rgba(0,0,0,0.5),
+              inset 5px 5px 15px rgba(255,255,255,0.3),
+              0 0 30px rgba(255,255,255,0.4);
 }
 
-@keyframes rotatePlanet {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-/* Shooting stars */
 .shooting-star {
   position: absolute;
   width: 100px;
@@ -137,16 +123,9 @@ input#answerInput {
   background: linear-gradient(90deg, white, transparent);
   opacity: 0.8;
   transform: rotate(-45deg);
-  animation: shoot 3s linear infinite;
+  animation: shoot 3s linear forwards;
 }
-
 @keyframes shoot {
-  0% {
-    transform: translate(0,0) rotate(-45deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-800px,800px) rotate(-45deg);
-    opacity: 0;
-  }
+  0% { transform: translate(0,0) rotate(-45deg); opacity: 1; }
+  100% { transform: translate(-800px,800px) rotate(-45deg); opacity: 0; }
 }
