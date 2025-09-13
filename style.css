@@ -6,18 +6,13 @@ body {
   padding: 0;
   overflow-x: hidden;
   min-height: 100vh;
+  background: radial-gradient(circle at top left, #0b0c20, #1c1f40);
   color: #fff;
 }
 
-/* Screens */
-.screen {
-  position: relative;
-  z-index: 1;
-  padding: 20px;
-}
 .hidden { display: none; }
 
-/* Glowing Title */
+/* Title */
 .glow {
   font-size: 3em;
   color: #FFD700;
@@ -31,7 +26,7 @@ body {
 }
 
 /* Buttons */
-button {
+button, .game-btn {
   font-size: 1.3em;
   margin: 10px;
   padding: 15px 30px;
@@ -43,19 +38,29 @@ button {
   box-shadow: 0 5px #cc7a00, 0 0 15px rgba(255,255,255,0.5);
   transition: all 0.2s ease-in-out;
 }
-button:hover {
+button:hover, .game-btn:hover {
   transform: scale(1.1) translateY(-5px);
   box-shadow: 0 10px #cc7a00, 0 0 30px rgba(255,255,255,0.8);
 }
-button:active {
-  transform: translateY(2px) scale(1);
-}
 
-/* Responsive Layout */
+/* Layout */
 .buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* Input */
+input[type=number] {
+  font-size: 1.3em;
+  padding: 10px;
+  width: 40%;
+  max-width: 150px;
+  text-align: center;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
 }
 
 /* Question and Score */
@@ -64,66 +69,19 @@ button:active {
   margin: 20px 0;
   color: #00ffff;
 }
-.score-board {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-}
-#categoryTitle {
-  font-size: 2em;
-  color: #ff69b4;
-}
+.score-board { font-size: 1.2em; }
+#categoryTitle { font-size: 2em; color: #ff69b4; }
 
 /* Feedback */
-#feedback {
-  font-size: 1.5em;
-  height: 40px;
-  margin: 15px 0;
-}
-
-/* Input */
-#answerInput {
-  font-size: 1.3em;
-  padding: 10px;
-  width: 150px;
-  text-align: center;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  margin-bottom: 10px;
-}
-
-/* Shake effect */
-.shake {
-  animation: shake 0.3s;
-}
+#feedback { font-size: 1.5em; height: 40px; margin: 15px 0; }
+.shake { animation: shake 0.5s; }
 @keyframes shake {
-  0% { transform: translateX(0); }
+  0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
+  75% { transform: translateX(5px); }
 }
 
-/* Keypad */
-.keypad {
-  margin: 15px auto;
-  display: grid;
-  grid-template-columns: repeat(3, 60px);
-  gap: 10px;
-  justify-content: center;
-}
-.keypad button {
-  font-size: 1.2em;
-  padding: 15px;
-  border-radius: 15px;
-  background: #444;
-  color: #fff;
-}
-.keypad button:hover {
-  background: #666;
-}
-
-/* Space background container */
+/* Space background */
 #space-bg {
   position: fixed;
   top: 0; left: 0;
@@ -140,11 +98,25 @@ button:active {
   background: white;
   border-radius: 50%;
   opacity: 0.8;
-  animation: twinkle 2s infinite alternate;
+  animation: twinkle 3s infinite ease-in-out;
 }
 @keyframes twinkle {
-  from { opacity: 0.3; }
-  to   { opacity: 1; }
+  0%,100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Shooting stars */
+.shooting-star {
+  position: absolute;
+  width: 80px; height: 2px;
+  background: linear-gradient(90deg, white, transparent);
+  opacity: 0.8;
+  transform: rotate(-45deg);
+  animation: shoot 2s linear infinite;
+}
+@keyframes shoot {
+  from { transform: translate(0,0) rotate(-45deg); opacity:1; }
+  to   { transform: translate(-800px,800px) rotate(-45deg); opacity:0; }
 }
 
 /* Planets */
@@ -157,10 +129,14 @@ button:active {
   box-shadow: inset -10px -10px 25px rgba(0,0,0,0.6), 0 0 40px rgba(255,200,150,0.4);
 }
 .planet.gas {
-  background: repeating-linear-gradient(90deg, #ffcc66 0 20px, #ff9966 20px 40px, #cc6633 40px 60px);
-  border-radius: 50%;
+  background: repeating-linear-gradient(
+    90deg,
+    #ffcc66 0 20px,
+    #ff9966 20px 40px,
+    #cc6633 40px 60px
+  );
   box-shadow: inset -15px -15px 30px rgba(0,0,0,0.4), 0 0 50px rgba(255,200,150,0.5);
-  animation: rotateBands 30s linear infinite;
+  animation: rotateBands 20s linear infinite;
 }
 @keyframes rotateBands {
   from { background-position: 0 0; }
@@ -184,24 +160,29 @@ button:active {
   background: linear-gradient(to right, rgba(255,255,255,0.4), transparent, rgba(255,255,255,0.4));
 }
 
-/* Shooting stars */
-.shooting-star {
-  position: absolute;
-  width: 100px; height: 2px;
-  background: linear-gradient(90deg, white, transparent);
-  opacity: 0.8;
-  transform: rotate(-45deg);
-  animation: shoot 3s linear infinite;
+/* Keypad */
+#keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 70px);
+  gap: 10px;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 250px;
 }
-@keyframes shoot {
-  0% { transform: translate(0,0) rotate(-45deg); opacity: 1; }
-  100% { transform: translate(-800px,800px) rotate(-45deg); opacity: 0; }
+.key {
+  padding: 15px;
+  background: #222;
+  border: 2px solid #555;
+  border-radius: 10px;
+  font-size: 1.2em;
+  color: white;
 }
+.key:active { background: #444; }
 
-/* Responsive */
+/* Mobile */
 @media (max-width: 600px) {
   #question { font-size: 1.5em; }
   .glow { font-size: 2em; }
-  button { font-size: 1.1em; padding: 10px 20px; }
-  #categoryTitle { font-size: 1.6em; }
+  button, .game-btn { font-size: 1.1em; padding: 10px 20px; }
+  input[type=number] { width: 60%; }
 }
