@@ -1,53 +1,61 @@
-let currentCategory = '';
-let currentMode = '';
-let score = 0, streak = 0, highScore = 0;
-let timeLeft = 60, timerInterval;
-let num1, num2, correctAnswer;
+let currentCategory = null;
+let score = 0, streak = 0, highScore = 0, timeLeft = 60;
+let timerInterval;
+const categories = {
+  addition: "+",
+  subtraction: "-",
+  multiplication: "×",
+  division: "÷"
+};
 
-const menu = document.getElementById('menu');
-const modeSelect = document.getElementById('modeSelect');
-const game = document.getElementById('game');
-const modeTitle = document.getElementById('modeTitle');
-const categoryTitle = document.getElementById('categoryTitle');
-const questionEl = document.getElementById('question');
-const answerInput = document.getElementById('answer');
-const feedback = document.getElementById('feedback');
-const scoreEl = document.getElementById('score');
-const streakEl = document.getElementById('streak');
-const timerEl = document.getElementById('timer');
-const timerContainer = document.getElementById('timerContainer');
-const highScoreEl = document.getElementById('highScore');
-const keypad = document.getElementById('keypad');
+const menu = document.getElementById("menu");
+const modeMenu = document.getElementById("modeMenu");
+const game = document.getElementById("game");
 
-// ---- Menu Handling ----
-function openCategory(cat){
+const questionEl = document.getElementById("question");
+const answerInput = document.getElementById("answer");
+const feedback = document.getElementById("feedback");
+const scoreEl = document.getElementById("score");
+const streakEl = document.getElementById("streak");
+const highScoreEl = document.getElementById("highScore");
+const highScoreContainer = document.getElementById("highScoreContainer");
+const timerContainer = document.getElementById("timerContainer");
+const timerEl = document.getElementById("timer");
+const keypad = document.getElementById("keypad");
+
+function openModeMenu(cat){
   currentCategory = cat;
-  menu.classList.add('hidden');
-  modeSelect.classList.remove('hidden');
-  modeTitle.innerText = `Choose Mode: ${cat}`;
+  menu.classList.add("hidden");
+  modeMenu.classList.remove("hidden");
+  document.getElementById("modeTitle").innerText =
+    `${cat.charAt(0).toUpperCase()+cat.slice(1)} Mode`;
+}
+
+function goBackToMenu(){
+  modeMenu.classList.add("hidden");
+  game.classList.add("hidden");
+  menu.classList.remove("hidden");
+  clearInterval(timerInterval);
 }
 
 function startGame(cat, mode){
-  currentMode = mode;
+  modeMenu.classList.add("hidden");
+  game.classList.remove("hidden");
+  document.getElementById("categoryTitle").innerText =
+    cat.charAt(0).toUpperCase()+cat.slice(1);
+
   score = 0; streak = 0;
   scoreEl.innerText = score;
   streakEl.innerText = streak;
-  feedback.innerText = '';
-  answerInput.value = '';
 
-  modeSelect.classList.add('hidden');
-  game.classList.remove('hidden');
-  categoryTitle.innerText = `${cat.toUpperCase()} - ${mode.toUpperCase()} MODE`;
-
-  // Load high score
-  let key = `mathGalaxyHighScore_${cat}_${mode}`;
-  highScore = localStorage.getItem(key) || 0;
-  highScoreEl.innerText = highScore;
-
-  if(mode === 'highscore'){
+  if(mode === "highscore"){
     timeLeft = 60;
-    timerContainer.classList.remove('hidden');
-    timerEl.innerText = timeLeft;
+    timerContainer.classList.remove("hidden");
+    highScoreContainer.classList.remove("hidden");
+    let key = `mathGalaxyHighScore_${cat}`;
+    highScore = localStorage.getItem(key) || 0;
+    highScoreEl.innerText = highScore;
+
     timerInterval = setInterval(()=>{
       timeLeft--;
       timerEl.innerText = timeLeft;
@@ -57,150 +65,163 @@ function startGame(cat, mode){
       }
     },1000);
   } else {
-    timerContainer.classList.add('hidden');
+    timerContainer.classList.add("hidden");
+    highScoreContainer.classList.add("hidden");
   }
 
-  keypad.classList.remove('hidden');
   generateQuestion();
-}
-
-function goHome(){
-  modeSelect.classList.add('hidden');
-  game.classList.add('hidden');
-  menu.classList.remove('hidden');
+  setupKeypad();
 }
 
 function endGame(){
+  game.classList.add("hidden");
+  menu.classList.remove("hidden");
   clearInterval(timerInterval);
-  game.classList.add('hidden');
-  menu.classList.remove('hidden');
 }
 
-// ---- Question Generation ----
+// Generate questions
 function generateQuestion(){
-  num1 = Math.floor(Math.random()*12)+1;
-  num2 = Math.floor(Math.random()*12)+1;
+  let a = Math.floor(Math.random()*12)+1;
+  let b = Math.floor(Math.random()*12)+1;
+  let symbol = categories[currentCategory];
+  let q, ans;
 
-  switch(currentCategory){
-    case 'addition': correctAnswer = num1+num2; questionEl.innerText=`${num1} + ${num2} = ?`; break;
-    case 'subtraction': correctAnswer = num1-num2; questionEl.innerText=`${num1} - ${num2} = ?`; break;
-    case 'multiplication': correctAnswer = num1*num2; questionEl.innerText=`${num1} × ${num2} = ?`; break;
-    case 'division': num1 = num1*num2; correctAnswer = num1/num2; questionEl.innerText=`${num1} ÷ ${num2} = ?`; break;
+  switch(symbol){
+    case "+": ans = a+b; q = `${a} + ${b}`; break;
+    case "-": ans = a-b; q = `${a} - ${b}`; break;
+    case "×": ans = a*b; q = `${a} × ${b}`; break;
+    case "÷":
+      ans = a;
+      q = `${a*b} ÷ ${b}`;
+      break;
   }
+
+  questionEl.innerText = q;
+  questionEl.dataset.answer = ans;
+  answerInput.value = "";
+  answerInput.focus();
 }
 
-// ---- Answer Handling ----
+// Answer checking
 function checkAnswer(){
   let userAns = parseInt(answerInput.value);
-  if(userAns === correctAnswer){
-    score++; streak++;
-    feedback.innerText = '✅ Correct!';
-    feedback.style.color = '#00FF00';
+  let correctAns = parseInt(questionEl.dataset.answer);
+  if(userAns === correctAns){
+    feedback.innerText = "✅ Correct!";
+    feedback.style.color = "#00FF00";
+    score++;
+    streak++;
     scoreEl.innerText = score;
     streakEl.innerText = streak;
 
-    // Update high score
-    let key = `mathGalaxyHighScore_${currentCategory}_${currentMode}`;
-    if(score > highScore){
-      highScore = score;
-      localStorage.setItem(key,highScore);
-      highScoreEl.innerText = highScore;
+    if(highScoreContainer && !highScoreContainer.classList.contains("hidden")){
+      let key = `mathGalaxyHighScore_${currentCategory}`;
+      if(score > highScore){
+        highScore = score;
+        localStorage.setItem(key, highScore);
+        highScoreEl.innerText = highScore;
+      }
     }
 
     setTimeout(generateQuestion,500);
-    answerInput.value='';
   } else {
-    streak=0;
+    streak = 0;
     streakEl.innerText = streak;
-    feedback.innerText = '❌ Wrong!';
-    feedback.style.color = '#FF4444';
-    answerInput.classList.add('shake');
+    feedback.innerText = "❌ Wrong!";
+    feedback.style.color = "#FF4444";
+
+    answerInput.classList.add("shake");
     setTimeout(()=>{
-      answerInput.classList.remove('shake');
-      answerInput.value='';
+      answerInput.classList.remove("shake");
+      answerInput.value = "";
     },500);
   }
 }
 
-// ---- Keypad Input ----
-document.querySelectorAll('.key').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    let val = btn.innerText;
-    if(val === '⌫'){
-      answerInput.value = answerInput.value.slice(0,-1);
-    } else if(val === '⏎'){
-      checkAnswer();
-    } else {
-      answerInput.value += val;
-    }
+// Keypad
+function setupKeypad(){
+  keypad.innerHTML = "";
+  const keys = ["1","2","3","4","5","6","7","8","9","0","←","✔"];
+  keys.forEach(k=>{
+    let keyEl = document.createElement("div");
+    keyEl.classList.add("key");
+    keyEl.innerText = k;
+    keyEl.addEventListener("click", ()=>{
+      if(k==="←"){
+        answerInput.value = answerInput.value.slice(0,-1);
+      } else if(k==="✔"){
+        checkAnswer();
+      } else {
+        answerInput.value += k;
+      }
+    });
+    keypad.appendChild(keyEl);
   });
+  keypad.classList.remove("hidden");
+}
+
+// Keyboard
+answerInput.addEventListener("keydown", e=>{
+  if(e.key === "Enter"){ checkAnswer(); }
 });
 
-// ---- Keyboard Support (Desktop) ----
-document.addEventListener('keydown', (e)=>{
-  if(game.classList.contains('hidden')) return;
-  if(e.key >= '0' && e.key <= '9'){
-    answerInput.value += e.key;
-  } else if(e.key === 'Backspace'){
-    answerInput.value = answerInput.value.slice(0,-1);
-  } else if(e.key === 'Enter'){
-    checkAnswer();
-  }
-});
-
-// ---- Space Background Generator ----
-const spaceBg = document.getElementById('space-bg');
-let planets = [];
+// --- Background setup ---
+const spaceBg = document.getElementById("space-bg");
+const planets = [];
+const planetTypes = ["rocky","gas","icy","ringed"];
 
 // Stars
-for(let i=0; i<120; i++){
-  let star = document.createElement('div');
-  star.classList.add('star');
-  star.style.top = Math.random()*100+'vh';
-  star.style.left = Math.random()*100+'vw';
-  star.style.animationDuration = (1+Math.random()*3)+'s';
+for(let i=0; i<100; i++){
+  let star = document.createElement("div");
+  star.classList.add("star");
+  star.style.top = Math.random()*100 + "vh";
+  star.style.left = Math.random()*100 + "vw";
   spaceBg.appendChild(star);
 }
 
 // Planets
-const planetTypes = ["rocky","gas","icy","ringed"];
 for(let i=0; i<5; i++){
-  let planet = document.createElement('div');
-  planet.classList.add('planet', planetTypes[i%planetTypes.length]);
-  let size = 80+Math.random()*120;
-  planet.style.width = size+'px';
-  planet.style.height = size+'px';
-  let x = Math.random()*100;
-  let y = Math.random()*100;
-  planet.style.left = x+'vw';
-  planet.style.top = y+'vh';
+  let planet = document.createElement("div");
+  planet.classList.add("planet");
+  planet.classList.add(planetTypes[i % planetTypes.length]);
+  let size = 60 + Math.random()*100;
+  planet.style.width = size+"px";
+  planet.style.height = size+"px";
+  planet.style.top = Math.random()*100+"vh";
+  planet.style.left = Math.random()*100+"vw";
   spaceBg.appendChild(planet);
 
-  planets.push({el:planet, x:x, y:y, dx:(Math.random()-0.5)*0.02, dy:(Math.random()-0.5)*0.02});
+  planets.push({
+    el: planet,
+    x: parseFloat(planet.style.left),
+    y: parseFloat(planet.style.top),
+    dx: (Math.random()-0.5)*0.02,
+    dy: (Math.random()-0.5)*0.02
+  });
 }
 
-// Move planets
+// Shooting stars
+for(let i=0; i<3; i++){
+  let s = document.createElement("div");
+  s.classList.add("shooting-star");
+  s.style.top = Math.random()*50+"vh";
+  s.style.left = (50+Math.random()*50)+"vw";
+  s.style.animationDelay = (i*5)+"s";
+  spaceBg.appendChild(s);
+}
+
+// Animate planets
 function animatePlanets(){
   planets.forEach(p=>{
     p.x += p.dx;
     p.y += p.dy;
-    if(p.x > 110) p.x = -10;
-    if(p.x < -10) p.x = 110;
-    if(p.y > 110) p.y = -10;
-    if(p.y < -10) p.y = 110;
-    p.el.style.left = p.x+'vw';
-    p.el.style.top = p.y+'vh';
+    if(p.x > window.innerWidth) p.x = -100;
+    if(p.y > window.innerHeight) p.y = -100;
+    if(p.x < -150) p.x = window.innerWidth;
+    if(p.y < -150) p.y = window.innerHeight;
+    p.el.style.left = p.x+"px";
+    p.el.style.top = p.y+"px";
   });
   requestAnimationFrame(animatePlanets);
 }
 animatePlanets();
-
-// Shooting Stars
-setInterval(()=>{
-  let shootingStar = document.createElement('div');
-  shootingStar.classList.add('shooting-star');
-  shootingStar.style.top = Math.random()*50+'vh';
-  shootingStar.style.left = Math.random()*100+'vw';
-  spaceBg.appendChild(shootingStar);
-  setTimeout(()=>shootingStar.remove(),3000);
-},4000);
