@@ -1,6 +1,6 @@
 /* General Body */
 body {
-  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-family: 'Arial', sans-serif; /* more readable */
   text-align: center;
   margin: 0;
   padding: 0;
@@ -26,47 +26,36 @@ body {
 
 /* Buttons */
 button, .game-btn {
-  font-size: 1.5em;
+  font-size: 1.3em;
   margin: 10px;
-  padding: 15px 30px;
+  padding: 12px 25px;
   border: none;
-  border-radius: 25px;
+  border-radius: 20px;
   cursor: pointer;
   background: linear-gradient(45deg, #ff9800, #ffcc00);
   color: #fff;
-  box-shadow: 0 5px #cc7a00, 0 0 15px rgba(255,255,255,0.5);
+  box-shadow: 0 5px #cc7a00, 0 0 10px rgba(255,255,255,0.5);
   transition: all 0.2s ease-in-out;
 }
 
 button:hover, .game-btn:hover {
-  transform: scale(1.1) translateY(-5px);
-  box-shadow: 0 10px #cc7a00, 0 0 30px rgba(255,255,255,0.8);
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 0 8px #cc7a00, 0 0 20px rgba(255,255,255,0.8);
 }
 
 button:active, .game-btn:active {
   transform: translateY(2px) scale(1);
 }
 
-/* Responsive Layout */
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-input#answerInput {
-  font-size: 2em;
-  padding: 10px;
-  width: 120px;
-  text-align: center;
-  border-radius: 10px;
-  border: 2px solid #fff;
-  margin-bottom: 10px;
+/* Hide elements */
+.hidden {
+  display: none;
 }
 
 /* Keypad */
 #keypad {
-  display: inline-block;
+  display: block; /* will toggle via JS */
+  margin-top: 10px;
 }
 
 .key-row {
@@ -87,7 +76,7 @@ input#answerInput {
 }
 
 .key:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
   background: #6666ff;
 }
 
@@ -120,15 +109,15 @@ input#answerInput {
   margin: 15px 0;
 }
 
-/* Space Background Container */
+/* Space Background */
 #space-bg {
   position: fixed;
-  top: 0;
-  left: 0;
+  top:0;
+  left:0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
   z-index: -1;
+  overflow: hidden;
   background: radial-gradient(ellipse at bottom, #0b0c20, #1c1f40);
 }
 
@@ -139,14 +128,12 @@ input#answerInput {
   opacity: 0.8;
   box-shadow: 0 0 15px rgba(255,255,255,0.3);
   animation: floatPlanet linear infinite;
-  background: radial-gradient(circle at 30% 30%, #fff, #888);
 }
 
-/* Float animation for planets */
 @keyframes floatPlanet {
-  0% { transform: translateY(0) translateX(0) rotate(0deg); }
-  50% { transform: translateY(-50px) translateX(30px) rotate(20deg); }
-  100% { transform: translateY(0) translateX(0) rotate(0deg); }
+  0% { transform: translateY(0) translateX(0) rotate(0deg);}
+  50% { transform: translateY(-50px) translateX(30px) rotate(20deg);}
+  100% { transform: translateY(0) translateX(0) rotate(0deg);}
 }
 
 /* Stars */
@@ -159,10 +146,9 @@ input#answerInput {
   opacity: 0.8;
   animation: twinkle linear infinite;
 }
-
 @keyframes twinkle {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
+  0%,100% { opacity: 0.3;}
+  50% { opacity: 1;}
 }
 
 /* Comets (Shooting stars) */
@@ -174,29 +160,28 @@ input#answerInput {
   border-radius: 50%;
   opacity: 0.9;
   transform: rotate(45deg);
-  box-shadow: 0 0 10px white, 0 0 20px #fff;
+  box-shadow: 0 0 10px white,0 0 20px #fff;
   animation: cometMove linear infinite;
 }
-
 @keyframes cometMove {
-  0% { transform: translateX(0) translateY(0) rotate(45deg); opacity: 1; }
-  100% { transform: translateX(-100vw) translateY(50vh) rotate(45deg); opacity: 0; }
+  0% { transform: translateX(0) translateY(0) rotate(45deg); opacity:1;}
+  100% { transform: translateX(-100vw) translateY(50vh) rotate(45deg); opacity:0;}
 }
 
 /* Shake animation for wrong answer */
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-10px); }
-  50% { transform: translateX(10px); }
-  75% { transform: translateX(-10px); }
-  100% { transform: translateX(0); }
+  0% { transform: translateX(0);}
+  25% { transform: translateX(-10px);}
+  50% { transform: translateX(10px);}
+  75% { transform: translateX(-10px);}
+  100% { transform: translateX(0);}
 }
 
 /* Media Queries */
-@media (max-width: 600px) {
-  #question { font-size: 1.5em; }
-  .glow { font-size: 2em; }
-  button, .game-btn { font-size: 1.2em; padding: 10px 20px; }
-  input#answerInput { width: 100px; font-size: 1.5em; }
-  #categoryTitle { font-size: 2em; }
+@media (max-width: 600px){
+  #question{font-size:1.5em;}
+  .glow{font-size:2em;}
+  button,.game-btn{font-size:1.2em;padding:10px 20px;}
+  input#answerInput{width:100px;font-size:1.5em;}
+  #categoryTitle{font-size:2em;}
 }
