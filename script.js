@@ -8,10 +8,14 @@ const categories = {
   division: "÷"
 };
 
-const menu = document.getElementById("menu");
+// Page elements
+const startMenu = document.getElementById("startMenu");
+const gameModes = document.getElementById("gameModes");
 const modeMenu = document.getElementById("modeMenu");
+const settings = document.getElementById("settings");
 const game = document.getElementById("game");
 
+// Game elements
 const questionEl = document.getElementById("question");
 const answerInput = document.getElementById("answer");
 const feedback = document.getElementById("feedback");
@@ -23,26 +27,35 @@ const timerContainer = document.getElementById("timerContainer");
 const timerEl = document.getElementById("timer");
 const keypad = document.getElementById("keypad");
 
+// Helpers
 function isMobile() { return window.innerWidth <= 600; }
+
+// Navigation
+function openGameModes(){ hideAllPages(); gameModes.classList.remove("hidden"); }
+function backToStartMenu(){ hideAllPages(); startMenu.classList.remove("hidden"); }
+function openSettings(){ hideAllPages(); settings.classList.remove("hidden"); }
+function backToGameModes(){ hideAllPages(); gameModes.classList.remove("hidden"); }
+
+function hideAllPages(){
+  startMenu.classList.add("hidden");
+  gameModes.classList.add("hidden");
+  modeMenu.classList.add("hidden");
+  settings.classList.add("hidden");
+  game.classList.add("hidden");
+}
+
+let currentMode = "normal";
 
 function openModeMenu(cat){
   currentCategory = cat;
-  menu.classList.add("hidden");
+  hideAllPages();
   modeMenu.classList.remove("hidden");
   document.getElementById("modeTitle").innerText =
     `${cat.charAt(0).toUpperCase() + cat.slice(1)} Mode`;
 }
 
-function goBackToMenu(){
-  modeMenu.classList.add("hidden");
-  game.classList.add("hidden");
-  menu.classList.remove("hidden");
-  clearInterval(timerInterval);
-  document.body.classList.remove("mobile-game");
-}
-
 function startGame(cat, mode){
-  modeMenu.classList.add("hidden");
+  hideAllPages();
   game.classList.remove("hidden");
   document.getElementById("categoryTitle").innerText =
     cat.charAt(0).toUpperCase() + cat.slice(1);
@@ -50,6 +63,7 @@ function startGame(cat, mode){
   score = 0; streak = 0;
   scoreEl.innerText = score;
   streakEl.innerText = streak;
+  currentMode = mode;
 
   if(mode === "highscore"){
     timeLeft = 60;
@@ -80,8 +94,8 @@ function startGame(cat, mode){
 }
 
 function endGame(){
-  game.classList.add("hidden");
-  menu.classList.remove("hidden");
+  hideAllPages();
+  startMenu.classList.remove("hidden");
   clearInterval(timerInterval);
   document.body.classList.remove("mobile-game");
 }
@@ -102,7 +116,9 @@ function generateQuestion(){
   questionEl.innerText = q;
   questionEl.dataset.answer = ans;
   answerInput.value = "";
-  answerInput.focus();
+
+  // Only focus input on desktop (avoid mobile keyboard)
+  if(!isMobile()) answerInput.focus();
 }
 
 function checkAnswer(){
@@ -116,7 +132,7 @@ function checkAnswer(){
     scoreEl.innerText = score;
     streakEl.innerText = streak;
 
-    if(highScoreContainer && !highScoreContainer.classList.contains("hidden")){
+    if(currentMode === "highscore"){
       let key = `mathGalaxyHighScore_${currentCategory}`;
       if(score > highScore){
         highScore = score;
@@ -140,20 +156,6 @@ function checkAnswer(){
   }
 }
 
-// Navigation
-function openGameModes(){ startMenu.classList.add("hidden"); gameModes.classList.remove("hidden"); }
-function backToStartMenu(){ hideAllPages(); startMenu.classList.remove("hidden"); }
-function openSettings(){ hideAllPages(); settings.classList.remove("hidden"); }
-function backToGameModes(){ hideAllPages(); gameModes.classList.remove("hidden"); }
-
-function hideAllPages(){
-  startMenu.classList.add("hidden");
-  gameModes.classList.add("hidden");
-  modeMenu.classList.add("hidden");
-  settings.classList.add("hidden");
-  game.classList.add("hidden");
-}
-
 // Accessibility Options
 function setColorScheme(scheme){
   document.body.classList.remove("dark","highContrast");
@@ -167,17 +169,10 @@ function setFontOption(option){
 }
 function setMotionOption(option){
   localStorage.setItem("mathGalaxyMotion",option);
-  applyMotionOption(option);
-}
-function applyMotionOption(option){
   if(option==="reduced"){
-    document.querySelectorAll(".planet").forEach(p=>p.style.animation="none");
-    document.querySelectorAll(".star").forEach(s=>s.style.animation="none");
-    document.querySelectorAll(".shooting-star").forEach(s=>s.style.animation="none");
+    document.body.classList.add("reduce-motion");
   } else {
-    document.querySelectorAll(".planet").forEach(p=>p.style.animation="floatPlanet 30s linear infinite");
-    document.querySelectorAll(".star").forEach(s=>s.style.animation="twinkle 3s infinite ease-in-out");
-    document.querySelectorAll(".shooting-star").forEach(s=>s.style.animation="shoot 2s linear infinite");
+    document.body.classList.remove("reduce-motion");
   }
 }
 
@@ -188,9 +183,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const m = localStorage.getItem("mathGalaxyMotion") || "enabled";
   setColorScheme(cs);
   setFontOption(f);
-  applyMotionOption(m);
+  setMotionOption(m);
 });
 
+// Keypad
 function setupKeypad(){
   keypad.innerHTML = "";
   const keys = ["1","2","3","4","5","6","7","8","9","0","←","✔"];
@@ -208,6 +204,7 @@ function setupKeypad(){
   keypad.classList.remove("hidden");
 }
 
+// Keyboard input
 answerInput.addEventListener("keydown", e=>{
   if(e.key === "Enter") checkAnswer();
 });
@@ -216,6 +213,8 @@ answerInput.addEventListener("keydown", e=>{
 const spaceBg = document.getElementById("space-bg");
 const planets = [];
 const planetTypes = ["rocky","gas","icy","ringed"];
+
+// Stars
 for(let i=0; i<100; i++){
   let star = document.createElement("div");
   star.classList.add("star");
@@ -223,18 +222,31 @@ for(let i=0; i<100; i++){
   star.style.left = Math.random()*100 + "vw";
   spaceBg.appendChild(star);
 }
+
+// Planets
 for(let i=0; i<5; i++){
   let planet = document.createElement("div");
-  planet.classList.add("planet");
-  planet.classList.add(planetTypes[i % planetTypes.length]);
+  planet.classList.add("planet", planetTypes[i % planetTypes.length]);
   let size = 60 + Math.random()*100;
   planet.style.width = size+"px";
   planet.style.height = size+"px";
-  planet.style.top = Math.random()*100+"vh";
-  planet.style.left = Math.random()*100+"vw";
+
+  let x = Math.random()*window.innerWidth;
+  let y = Math.random()*window.innerHeight;
+  planet.style.left = x+"px";
+  planet.style.top = y+"px";
+
   spaceBg.appendChild(planet);
-  planets.push({el: planet, x: parseFloat(planet.style.left), y: parseFloat(planet.style.top), dx: (Math.random()-0.5)*0.2, dy: (Math.random()-0.5)*0.2});
+  planets.push({
+    el: planet,
+    x,
+    y,
+    dx: (Math.random()-0.5)*0.2,
+    dy: (Math.random()-0.5)*0.2
+  });
 }
+
+// Shooting stars
 for(let i=0;i<3;i++){
   let s = document.createElement("div");
   s.classList.add("shooting-star");
@@ -243,6 +255,8 @@ for(let i=0;i<3;i++){
   s.style.animationDelay = (i*5)+"s";
   spaceBg.appendChild(s);
 }
+
+// Animate planets
 function animatePlanets(){
   planets.forEach(p=>{
     p.x += p.dx; p.y += p.dy;
@@ -250,7 +264,8 @@ function animatePlanets(){
     if(p.y > window.innerHeight) p.y = -100;
     if(p.x < -150) p.x = window.innerWidth;
     if(p.y < -150) p.y = window.innerHeight;
-    p.el.style.left = p.x+"px"; p.el.style.top = p.y+"px";
+    p.el.style.left = p.x+"px";
+    p.el.style.top = p.y+"px";
   });
   requestAnimationFrame(animatePlanets);
 }
