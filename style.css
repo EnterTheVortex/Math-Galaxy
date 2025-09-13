@@ -54,16 +54,46 @@ button:active, .game-btn:active {
   justify-content: center;
 }
 
-input[type=number] {
-  font-size: 1.3em;
+input#answerInput {
+  font-size: 2em;
   padding: 10px;
-  width: 40%;
-  max-width: 150px;
+  width: 120px;
   text-align: center;
   border-radius: 10px;
-  border: none;
-  outline: none;
+  border: 2px solid #fff;
   margin-bottom: 10px;
+}
+
+/* Keypad */
+#keypad {
+  display: inline-block;
+}
+
+.key-row {
+  display: flex;
+  justify-content: center;
+}
+
+.key {
+  font-size: 1.5em;
+  margin: 5px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #4444ff;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 3px #2222aa;
+}
+
+.key:hover {
+  transform: scale(1.1);
+  background: #6666ff;
+}
+
+.key:active {
+  transform: scale(1);
+  box-shadow: 0 2px #2222aa;
 }
 
 /* Question and Score */
@@ -102,6 +132,23 @@ input[type=number] {
   background: radial-gradient(ellipse at bottom, #0b0c20, #1c1f40);
 }
 
+/* Planets */
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.8;
+  box-shadow: 0 0 15px rgba(255,255,255,0.3);
+  animation: floatPlanet linear infinite;
+  background: radial-gradient(circle at 30% 30%, #fff, #888);
+}
+
+/* Float animation for planets */
+@keyframes floatPlanet {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(-50px) translateX(30px) rotate(20deg); }
+  100% { transform: translateY(0) translateX(0) rotate(0deg); }
+}
+
 /* Stars */
 .star {
   position: absolute;
@@ -118,29 +165,16 @@ input[type=number] {
   50% { opacity: 1; }
 }
 
-/* Planets */
-.planet {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.7;
-  animation: floatPlanet linear infinite;
-}
-
-@keyframes floatPlanet {
-  0% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-50px) translateX(30px); }
-  100% { transform: translateY(0) translateX(0); }
-}
-
-/* Comets */
+/* Comets (Shooting stars) */
 .comet {
   position: absolute;
-  width: 3px;
+  width: 2px;
   height: 15px;
   background: white;
   border-radius: 50%;
-  opacity: 0.8;
+  opacity: 0.9;
   transform: rotate(45deg);
+  box-shadow: 0 0 10px white, 0 0 20px #fff;
   animation: cometMove linear infinite;
 }
 
@@ -149,11 +183,20 @@ input[type=number] {
   100% { transform: translateX(-100vw) translateY(50vh) rotate(45deg); opacity: 0; }
 }
 
-/* Media Queries for smaller devices */
+/* Shake animation for wrong answer */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-10px); }
+  100% { transform: translateX(0); }
+}
+
+/* Media Queries */
 @media (max-width: 600px) {
   #question { font-size: 1.5em; }
   .glow { font-size: 2em; }
   button, .game-btn { font-size: 1.2em; padding: 10px 20px; }
-  input[type=number] { width: 60%; }
+  input#answerInput { width: 100px; font-size: 1.5em; }
   #categoryTitle { font-size: 2em; }
 }
