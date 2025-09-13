@@ -15,17 +15,25 @@
   <h1 class="title">🌌 Math Galaxy 🌌</h1>
   <h2>Choose Your Math Adventure:</h2>
   <div class="buttons">
-    <button class="game-btn" onclick="startGame('addition')">Addition Adventure</button>
-    <button class="game-btn" onclick="startGame('subtraction')">Subtraction Safari</button>
-    <button class="game-btn" onclick="startGame('multiplication')">Multiplication Mayhem</button>
-    <button class="game-btn" onclick="startGame('division')">Division Dash</button>
+    <button class="game-btn" onclick="showModeSelect('addition')">Addition Adventure</button>
+    <button class="game-btn" onclick="showModeSelect('subtraction')">Subtraction Safari</button>
+    <button class="game-btn" onclick="showModeSelect('multiplication')">Multiplication Mayhem</button>
+    <button class="game-btn" onclick="showModeSelect('division')">Division Dash</button>
   </div>
-  <h3>High Score: <span id="highScore">0</span></h3>
+</div>
+
+<!-- Mode Select -->
+<div id="modeSelect" class="hidden">
+  <h2 id="modeCategoryTitle"></h2>
+  <button class="game-btn" onclick="startGame(currentCategory,'normal')">Normal Mode</button>
+  <button class="game-btn" onclick="startGame(currentCategory,'highscore')">High Score Mode</button>
+  <button class="game-btn" onclick="backToMenu()">Back</button>
 </div>
 
 <!-- Game Screen -->
 <div id="game" class="hidden">
   <h2 id="categoryTitle"></h2>
+  <div id="timer" class="hidden">⏳ Time: <span id="timeLeft">60</span>s</div>
   <div id="question">Question will appear here</div>
   <div id="answer-container">
     <input type="text" id="answerInput" placeholder="0" readonly>
@@ -53,7 +61,11 @@
     </div>
   </div>
   <p id="feedback"></p>
-  <p class="score-board">Score: <span id="score">0</span> | Streak: <span id="streak">0</span></p>
+  <p class="score-board">
+    Score: <span id="score">0</span> |
+    Streak: <span id="streak">0</span> |
+    High Score: <span id="highScore">0</span>
+  </p>
   <button onclick="backToMenu()" class="game-btn">Back to Menu</button>
 </div>
 
