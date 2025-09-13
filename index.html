@@ -28,8 +28,31 @@
 <div id="game" class="hidden">
   <h2 id="categoryTitle"></h2>
   <div id="question">Question will appear here</div>
-  <input type="number" id="answerInput" placeholder="Enter answer">
-  <button id="submitAnswer" class="game-btn">Submit</button>
+  <div id="answer-container">
+    <input type="text" id="answerInput" placeholder="0" readonly>
+    <div id="keypad">
+      <div class="key-row">
+        <button class="key">1</button>
+        <button class="key">2</button>
+        <button class="key">3</button>
+      </div>
+      <div class="key-row">
+        <button class="key">4</button>
+        <button class="key">5</button>
+        <button class="key">6</button>
+      </div>
+      <div class="key-row">
+        <button class="key">7</button>
+        <button class="key">8</button>
+        <button class="key">9</button>
+      </div>
+      <div class="key-row">
+        <button class="key">0</button>
+        <button class="key" id="backspace">⌫</button>
+        <button class="key" id="enter">✔</button>
+      </div>
+    </div>
+  </div>
   <p id="feedback"></p>
   <p class="score-board">Score: <span id="score">0</span> | Streak: <span id="streak">0</span></p>
   <button onclick="backToMenu()" class="game-btn">Back to Menu</button>
