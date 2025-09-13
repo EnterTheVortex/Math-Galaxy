@@ -117,3 +117,48 @@ function checkAnswer(){
     },500);
   }
 }
+
+// ---------- Space Background Generator ----------
+const spaceBg = document.getElementById('space-bg');
+
+// Stars
+for(let i=0; i<100; i++){
+  let star = document.createElement('div');
+  star.classList.add('star');
+  star.style.top = Math.random()*100 + 'vh';
+  star.style.left = Math.random()*100 + 'vw';
+  star.style.animationDuration = (1 + Math.random()*2) + 's';
+  spaceBg.appendChild(star);
+}
+
+// Planets
+const planetColors = [
+  'radial-gradient(circle at 30% 30%, #ff9999, #660000)',
+  'radial-gradient(circle at 30% 30%, #99ccff, #003366)',
+  'radial-gradient(circle at 30% 30%, #ffff99, #666600)',
+  'radial-gradient(circle at 30% 30%, #cc99ff, #330066)'
+];
+
+for(let i=0; i<3; i++){
+  let planet = document.createElement('div');
+  planet.classList.add('planet');
+  planet.style.width = 80 + Math.random()*100 + 'px';
+  planet.style.height = planet.style.width;
+  planet.style.top = Math.random()*80 + 'vh';
+  planet.style.left = Math.random()*80 + 'vw';
+  planet.style.background = planetColors[i % planetColors.length];
+  planet.style.animationDuration = (30 + Math.random()*40) + 's';
+  spaceBg.appendChild(planet);
+}
+
+// Shooting Stars
+setInterval(()=>{
+  let shootingStar = document.createElement('div');
+  shootingStar.classList.add('shooting-star');
+  shootingStar.style.top = Math.random()*50 + 'vh';
+  shootingStar.style.left = Math.random()*100 + 'vw';
+  spaceBg.appendChild(shootingStar);
+
+  setTimeout(()=> shootingStar.remove(), 3000);
+}, 4000);
+
