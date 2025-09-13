@@ -140,6 +140,57 @@ function checkAnswer(){
   }
 }
 
+// Navigation
+function openGameModes(){ startMenu.classList.add("hidden"); gameModes.classList.remove("hidden"); }
+function backToStartMenu(){ hideAllPages(); startMenu.classList.remove("hidden"); }
+function openSettings(){ hideAllPages(); settings.classList.remove("hidden"); }
+function backToGameModes(){ hideAllPages(); gameModes.classList.remove("hidden"); }
+
+function hideAllPages(){
+  startMenu.classList.add("hidden");
+  gameModes.classList.add("hidden");
+  modeMenu.classList.add("hidden");
+  settings.classList.add("hidden");
+  game.classList.add("hidden");
+}
+
+// Accessibility Options
+function setColorScheme(scheme){
+  document.body.classList.remove("dark","highContrast");
+  document.body.classList.add(scheme);
+  localStorage.setItem("mathGalaxyColorScheme",scheme);
+}
+function setFontOption(option){
+  document.body.classList.remove("defaultFont","largeFont","lexieFont");
+  document.body.classList.add(option + "Font");
+  localStorage.setItem("mathGalaxyFont",option);
+}
+function setMotionOption(option){
+  localStorage.setItem("mathGalaxyMotion",option);
+  applyMotionOption(option);
+}
+function applyMotionOption(option){
+  if(option==="reduced"){
+    document.querySelectorAll(".planet").forEach(p=>p.style.animation="none");
+    document.querySelectorAll(".star").forEach(s=>s.style.animation="none");
+    document.querySelectorAll(".shooting-star").forEach(s=>s.style.animation="none");
+  } else {
+    document.querySelectorAll(".planet").forEach(p=>p.style.animation="floatPlanet 30s linear infinite");
+    document.querySelectorAll(".star").forEach(s=>s.style.animation="twinkle 3s infinite ease-in-out");
+    document.querySelectorAll(".shooting-star").forEach(s=>s.style.animation="shoot 2s linear infinite");
+  }
+}
+
+// Load saved accessibility preferences
+document.addEventListener("DOMContentLoaded", ()=>{
+  const cs = localStorage.getItem("mathGalaxyColorScheme") || "dark";
+  const f = localStorage.getItem("mathGalaxyFont") || "default";
+  const m = localStorage.getItem("mathGalaxyMotion") || "enabled";
+  setColorScheme(cs);
+  setFontOption(f);
+  applyMotionOption(m);
+});
+
 function setupKeypad(){
   keypad.innerHTML = "";
   const keys = ["1","2","3","4","5","6","7","8","9","0","←","✔"];
