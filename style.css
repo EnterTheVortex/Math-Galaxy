@@ -179,10 +179,21 @@ input[type=number] {
 }
 .key:active { background: #444; }
 
-/* Mobile */
+/* Mobile tweaks */
 @media (max-width: 600px) {
   #question { font-size: 1.5em; }
   .glow { font-size: 2em; }
-  button, .game-btn { font-size: 1.1em; padding: 10px 20px; }
-  input[type=number] { width: 60%; }
+  button, .game-btn { font-size: 1.5em; padding: 20px 30px; margin: 10px 0; width: 80%; }
+  input[type=number] { width: 80%; font-size: 1.5em; }
+
+  #keypad {
+    grid-template-columns: repeat(3, 80px);
+    gap: 12px;
+  }
+  .key { width: 80px; height: 80px; font-size: 1.4em; }
+
+  /* Hide main title when mobile in game mode */
+  body.mobile-game .glow {
+    display: none;
+  }
 }
