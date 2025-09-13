@@ -36,16 +36,15 @@
   <div id="game" class="page hidden">
     <h2 id="categoryTitle"></h2>
     <p id="question"></p>
-    <input type="number" id="answer" placeholder="Answer">
-    <div id="keypad" class="hidden"></div>
+    <!-- Make readonly to disable mobile keyboard -->
+    <input type="number" id="answer" placeholder="Answer" readonly>
+    <div id="keypad"></div>
     <p id="feedback"></p>
     <p class="score-board">Score: <span id="score">0</span></p>
     <p class="score-board">Streak: <span id="streak">0</span></p>
     <p id="timerContainer" class="hidden">⏱ Time left: <span id="timer">60</span>s</p>
-    <p id="highScoreContainer" class="hidden">
-      High Score: <span id="highScore">0</span>
-    </p>
-    <button onclick="endGame()">🏠 Back to Menu</button>
+    <p id="highScoreContainer" class="hidden">High Score: <span id="highScore">0</span></p>
+    <button class="game-btn" onclick="endGame()">🏠 Back to Menu</button>
   </div>
 
   <script src="script.js"></script>
