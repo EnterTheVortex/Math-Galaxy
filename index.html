@@ -45,17 +45,16 @@
 
 <!-- ---------- Game Screen ---------- -->
 <div id="game" class="screen hidden">
-  <h2 id="gameTitle" class="category-title"></h2>
+  <h2 id="gameTitle" class="game-title"></h2>
   <div id="timerBox">
     Time Left: <span id="timer">60</span>s
   </div>
   <div id="scoreBoard">
-    <span class="score-display">Score: <span id="score">0</span></span> | 
-    <span class="streak-display">Streak: <span id="streak">0</span></span>
+    Score: <span id="score">0</span> | Streak: <span id="streak">0</span>
   </div>
-  <div id="question" class="question-display"></div>
+  <div id="question" class="question"></div>
   <input type="text" id="answerInput" readonly>
-  <div id="feedback" class="feedback-display"></div>
+  <div id="feedback"></div>
   <div id="keypad"></div>
   <button class="backBtn" onclick="exitGame()">Exit</button>
 </div>
