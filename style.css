@@ -31,6 +31,7 @@ h1.glow {
   to { text-shadow: 0 0 15px #FFD700, 0 0 25px #FFDF00, 0 0 35px #FFCC00; }
 }
 
+/* ---------- Buttons ---------- */
 .menu-buttons button, .backBtn {
   font-size: 1.2em;
   margin: 5px;
@@ -53,21 +54,35 @@ h1.glow {
   transform: translateY(2px) scale(1);
 }
 
+/* ---------- Game Screen ---------- */
+#game h2#gameTitle {
+  font-size: 3em;
+  color: #FFD700;
+  text-shadow: 0 0 5px #FFD700, 0 0 15px #FFDF00, 0 0 30px #FFCC00;
+  margin-bottom: 15px;
+}
+
+#scoreBoard {
+  font-size: 1.8em;
+  margin-bottom: 15px;
+  text-shadow: 0 0 3px #fff;
+}
+
 #question {
-  font-size: 2em;
-  margin: 15px 0;
+  font-size: 3em;
+  font-weight: bold;
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+  margin: 20px 0;
 }
 
 #feedback {
-  font-size: 1.5em;
-  margin: 10px 0;
-  height: 30px;
+  font-size: 2em;
+  margin: 15px 0;
+  height: 40px;
 }
 
-#scoreBoard, #timerBox {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-}
+#timerBox.hidden { display: none; }
 
 /* ---------- Keypad ---------- */
 #keypad {
@@ -95,7 +110,7 @@ h1.glow {
   box-shadow: 0 2px #222;
 }
 
-/* ---------- Collection ---------- */
+/* ---------- Collections ---------- */
 .animal-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit,minmax(80px,1fr));
@@ -165,7 +180,7 @@ body.large-font { font-size: 1.3em; }
 body.lexie-font { font-family: 'Lexie Readable', Arial, sans-serif; }
 body.reduce-motion * { animation: none !important; transition: none !important; }
 
-/* ---------- Canvas ---------- */
+/* ---------- Animations ---------- */
 canvas#spaceCanvas {
   position: fixed;
   top:0; left:0;
@@ -176,7 +191,8 @@ canvas#spaceCanvas {
 /* ---------- Responsive ---------- */
 @media (max-width: 600px) {
   h1.glow { font-size: 2em; }
-  #question { font-size: 1.5em; }
+  #game h2#gameTitle { font-size: 2em; }
+  #question { font-size: 2em; }
   #scoreBoard, #timerBox { font-size: 1em; }
   #keypad button { width: 50px; height: 50px; font-size: 1.2em; }
   .animal-card, .reveal-card { width: 60px; height: 80px; font-size: 0.9em; }
