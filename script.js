@@ -66,17 +66,33 @@ function checkAnswer(){
   }
 }
 
-function setupKeypad(){
-  keypad.innerHTML="";
-  const keys=["1","2","3","4","5","6","7","8","9","0","←","✔"];
-  keys.forEach(k=>{
-    let keyEl=document.createElement("div"); keyEl.classList.add("key"); keyEl.innerText=k;
-    const handle=()=>{ if(k==="←") answerInput.value=answerInput.value.slice(0,-1); else if(k==="✔") checkAnswer(); else answerInput.value+=k; };
-    keyEl.addEventListener("click",handle); keyEl.addEventListener("touchstart",handle); keypad.appendChild(keyEl);
-  }); keypad.classList.remove("hidden");
-}
+function setupKeypad() {
+  keypad.innerHTML = "";
+  const keys = ["1","2","3","4","5","6","7","8","9","0","←","✔"];
+  
+  // Detect event type
+  const eventType = isMobile() ? "touchstart" : "click";
 
-answerInput.addEventListener("keydown",e=>{ if(e.key==="Enter") checkAnswer(); });
+  keys.forEach(k => {
+    let keyEl = document.createElement("div");
+    keyEl.classList.add("key");
+    keyEl.innerText = k;
+
+    keyEl.addEventListener(eventType, () => {
+      if (k === "←") {
+        answerInput.value = answerInput.value.slice(0, -1);
+      } else if (k === "✔") {
+        checkAnswer();
+      } else {
+        answerInput.value += k;
+      }
+    });
+
+    keypad.appendChild(keyEl);
+  });
+
+  keypad.classList.remove("hidden");
+}
 
 // Accessibility Toggles
 function toggleClass(cls){ document.body.classList.toggle(cls); saveSettings(); }
