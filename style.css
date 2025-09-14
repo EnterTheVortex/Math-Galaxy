@@ -2,145 +2,148 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   overflow: hidden;
-  background: black;
+  background: radial-gradient(ellipse at bottom, #0b0c20, #1c1f40);
   color: #fff;
-}
-
-.screen {
-  display: none;
-  padding: 10px;
   text-align: center;
 }
 
-.screen.active {
-  display: block;
-}
-
-/* ---------- Canvas ---------- */
+/* ---------- Space Background ---------- */
 #spaceCanvas {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1;
-}
-
-/* ---------- Titles ---------- */
-h1, h2, h3 {
-  margin: 10px 0;
-  color: #FFD700;
-  text-shadow: 0 0 10px #FFD700;
 }
 
 /* ---------- Buttons ---------- */
 button {
-  font-size: 1.5rem;
-  margin: 5px;
-  padding: 12px 25px;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  margin: 6px;
   border: none;
-  border-radius: 12px;
-  cursor: pointer;
+  border-radius: 25px;
   background: linear-gradient(45deg,#ff9800,#ffcc00);
-  color: #fff;
-  box-shadow: 0 4px #cc7a00;
+  color: #000;
+  cursor: pointer;
+  box-shadow: 0 5px #cc7a00;
   transition: all 0.2s ease-in-out;
 }
 
 button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px #cc7a00;
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 10px #cc7a00;
 }
 
 button:active {
   transform: translateY(2px) scale(1);
 }
 
-/* ---------- Keypad ---------- */
+/* ---------- Screens ---------- */
+.screen { display: none; }
+.screen.active { display: block; padding: 10px; }
+
+/* ---------- Titles ---------- */
+h1, h2, h3 { margin: 10px 0; }
+h1 { font-size: 3rem; color: #FFD700; text-shadow: 0 0 10px #FFD700; }
+h2 { font-size: 2rem; color: #ff69b4; }
+h3 { font-size: 1.5rem; }
+
+/* ---------- Game ---------- */
+#question { font-size: 2rem; margin: 20px 0; color: #00ffff; }
+#answerInput {
+  font-size: 1.5rem;
+  width: 150px;
+  text-align: center;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  background: #111;
+  color: #fff;
+}
+
+#feedback { height: 30px; margin: 10px 0; font-size: 1.3rem; }
+
 #keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 60px);
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  margin-top: 10px;
+  max-width: 320px;
+  margin: 10px auto;
 }
 
 #keypad button {
-  font-size: 1.4rem;
-  background: linear-gradient(45deg,#4caf50,#81c784);
+  width: 60px;
+  height: 60px;
+  margin: 5px;
+  font-size: 1.2rem;
+  border-radius: 15px;
+  background: linear-gradient(135deg,#4caf50,#8bc34a);
+  color: #fff;
 }
 
-/* ---------- Question / Score ---------- */
-#question {
-  font-size: 2rem;
-  margin: 15px 0;
-  color: #00ffff;
-}
-
-#scoreBox, #streakBox, #timerBox, #highScoreContainer {
+#scoreboard {
   margin: 10px 0;
   font-size: 1.2rem;
 }
 
-/* ---------- Feedback ---------- */
-#feedback {
-  font-size: 1.5rem;
-  height: 30px;
+#timerBox {
   margin: 10px 0;
+  font-size: 1.2rem;
 }
 
-/* ---------- Collection ---------- */
-#animalGrid, #revealGrid {
+/* ---------- Collections ---------- */
+.collection-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
   gap: 10px;
-  justify-items: center;
-  margin: 10px;
+  margin: 20px;
 }
 
-.animal-card, .reveal-card {
-  width: 80px;
+.animal-card {
   height: 100px;
-  border-radius: 12px;
-  background: #444;
+  border-radius: 10px;
+  background: #333;
   color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  font-size: 1rem;
-  perspective: 600px;
 }
 
 .animal-card.locked {
-  background: #222;
-  color: #666;
+  background: #555;
+  font-size: 2rem;
 }
 
-/* ---------- Flip Cards ---------- */
+/* ---------- Pack Reveal ---------- */
+.reveal-card {
+  perspective: 1000px;
+}
+
 .reveal-inner {
-  width: 100%;
-  height: 100%;
-  transition: transform 1s;
-  transform-style: preserve-3d;
   position: relative;
+  width: 80px;
+  height: 100px;
+  transform-style: preserve-3d;
+  transition: transform 1s;
 }
 
-.reveal-card.flip .reveal-inner {
-  transform: rotateY(180deg);
-}
+.reveal-card.flip .reveal-inner { transform: rotateY(180deg); }
 
 .reveal-front, .reveal-back {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 80px;
+  height: 100px;
+  border-radius: 10px;
   backface-visibility: hidden;
-  border-radius: 12px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: 2rem;
 }
 
 .reveal-front {
@@ -151,86 +154,33 @@ button:active {
 .reveal-back {
   transform: rotateY(180deg);
   color: #fff;
-  font-size: 1.2rem;
 }
 
-/* ---------- Accessibility Toggles ---------- */
-.toggle-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px 0;
-  font-size: 1rem;
-}
+/* ---------- Accessibility ---------- */
+.dark-mode { background: #111; color: #fff; }
+.high-contrast { background: #000; color: #fff; }
+.large-font { font-size: 1.5rem; }
+.lexie-font { font-family: "Lexie Readable", Arial, sans-serif; }
+.reduce-motion * { animation: none !important; transition: none !important; }
 
-.toggle-container label {
-  margin-left: 8px;
+/* ---------- Animations ---------- */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
 }
+.shake { animation: shake 0.4s; }
 
-.toggle-switch {
-  position: relative;
-  width: 50px;
-  height: 24px;
-  display: inline-block;
-}
-
-.toggle-switch input {
-  display: none;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  background-color: #ccc;
-  border-radius: 24px;
-  top: 0; left: 0;
-  right: 0; bottom: 0;
-  transition: 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-/* ---------- Responsive ---------- */
+/* ---------- Mobile Optimizations ---------- */
 @media (max-width: 600px) {
-  button {
-    font-size: 1.2rem;
-    padding: 10px 18px;
-  }
-
-  #keypad {
-    grid-template-columns: repeat(3, 50px);
-    gap: 8px;
-  }
-
-  .animal-card, .reveal-card {
-    width: 60px;
-    height: 90px;
-    font-size: 0.9rem;
-  }
-
-  #question {
-    font-size: 1.5rem;
-  }
-
-  #scoreBox, #streakBox, #timerBox, #highScoreContainer {
-    font-size: 1rem;
-  }
+  #question { font-size: 1.5rem; }
+  #answerInput { font-size: 1.2rem; width: 120px; }
+  #keypad button { width: 50px; height: 50px; font-size: 1rem; }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  .screen { padding: 5px; }
+  button { font-size: 1rem; padding: 8px 15px; margin: 4px; }
 }
