@@ -11,7 +11,7 @@
 <!-- Canvas Background -->
 <canvas id="spaceCanvas"></canvas>
 
-<!-- ---------- Menu ---------- -->
+<!-- ---------- Start Menu ---------- -->
 <div id="menu" class="screen active">
   <h1 class="glow">Math Galaxy</h1>
   <div class="menu-buttons">
@@ -23,7 +23,7 @@
 
 <!-- ---------- Game Modes ---------- -->
 <div id="gameModes" class="screen hidden">
-  <h2 class="category-title">Choose Category</h2>
+  <h2 class="screen-title">Choose Category</h2>
   <div class="menu-buttons">
     <button onclick="chooseCategory('addition')">Addition Adventure</button>
     <button onclick="chooseCategory('subtraction')">Subtraction Safari</button>
@@ -35,7 +35,7 @@
 
 <!-- ---------- Mode Menu ---------- -->
 <div id="modeMenu" class="screen hidden">
-  <h2 id="modeTitle" class="category-title"></h2>
+  <h2 class="screen-title" id="modeTitle"></h2>
   <div class="menu-buttons">
     <button onclick="startGame('normal')">Normal Mode</button>
     <button onclick="startGame('highscore')">High Score Mode</button>
@@ -45,12 +45,12 @@
 
 <!-- ---------- Game Screen ---------- -->
 <div id="game" class="screen hidden">
-  <h2 id="gameTitle" class="category-title"></h2>
+  <h2 class="screen-title" id="gameTitle"></h2>
   <div id="timerBox">
     Time Left: <span id="timer">60</span>s
   </div>
   <div id="scoreBoard">
-    Score: <span id="score">0</span> | Streak: <span id="streak">0</span>
+    Score: <span id="score">0</span> | Streak: <span id="streak">0</span> | High Score: <span id="highScore">0</span>
   </div>
   <div id="question" class="question-display"></div>
   <input type="text" id="answerInput" readonly>
@@ -61,8 +61,8 @@
 
 <!-- ---------- Collections ---------- -->
 <div id="collection" class="screen hidden">
-  <h2 class="category-title">My Collection</h2>
-  <div>Tokens: <span id="tokenCount">0</span></div>
+  <h2 class="screen-title">My Collection</h2>
+  <div id="tokenCount" class="tokens">0 Tokens</div>
   <button onclick="buyPack()">Buy 3-Card Pack (15 tokens)</button>
   <div id="animalGrid" class="animal-grid"></div>
   <button class="backBtn" onclick="showScreen('menu')">Back</button>
@@ -70,14 +70,14 @@
 
 <!-- ---------- Pack Reveal ---------- -->
 <div id="packReveal" class="screen hidden">
-  <h2 class="category-title">New Pack!</h2>
+  <h2 class="screen-title">New Pack!</h2>
   <div id="revealGrid" class="animal-grid"></div>
   <button onclick="finishReveal()">Finish Reveal</button>
 </div>
 
-<!-- ---------- Settings ---------- -->
+<!-- ---------- Settings / Accessibility ---------- -->
 <div id="settings" class="screen hidden">
-  <h2 class="category-title">Settings</h2>
+  <h2 class="screen-title">Settings</h2>
   <div class="settings-group">
     <label><input type="checkbox" id="darkMode"> Dark Mode</label>
     <label><input type="checkbox" id="contrastMode"> High Contrast</label>
