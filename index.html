@@ -74,14 +74,20 @@
     </div>
 
     <!-- Collection -->
-    <div id="collection" class="screen hidden">
-      <h2>Animal Collection</h2>
-      <p>Tokens: <span id="tokenCount">0</span></p>
-      <button class="menu-btn" onclick="buyPack()">🎁 Buy Pack (15 tokens)</button>
-      <div id="animalGrid" class="grid"></div>
-      <button class="back-btn" onclick="showScreen('menu')">⬅️ Back</button>
-    </div>
-  </div>
+<div id="collection" class="screen hidden">
+  <h2>Animal Collection</h2>
+  <p>Tokens: <span id="tokenCount">0</span></p>
+  <button class="menu-btn" onclick="buyPack()">🎁 Buy Pack (15 tokens)</button>
+  <div id="animalGrid" class="grid"></div>
+  <button class="back-btn" onclick="showScreen('menu')">⬅️ Back</button>
+</div>
+
+<!-- Pack Reveal Screen -->
+<div id="packReveal" class="screen hidden">
+  <h2>🎉 New Cards! 🎉</h2>
+  <div id="revealGrid" class="grid"></div>
+  <button class="menu-btn" onclick="finishReveal()">Back to Collection</button>
+</div>
 
   <script src="script.js"></script>
 </body>
