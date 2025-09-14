@@ -11,7 +11,7 @@
 <!-- Canvas Background -->
 <canvas id="spaceCanvas"></canvas>
 
-<!-- ---------- Start Menu ---------- -->
+<!-- ---------- Menu ---------- -->
 <div id="menu" class="screen active">
   <h1 class="glow">Math Galaxy</h1>
   <div class="menu-buttons">
@@ -45,14 +45,14 @@
 
 <!-- ---------- Game Screen ---------- -->
 <div id="game" class="screen hidden">
-  <h2 id="gameTitle" class="game-title"></h2>
+  <h2 id="gameTitle" class="category-title"></h2>
   <div id="timerBox">
     Time Left: <span id="timer">60</span>s
   </div>
   <div id="scoreBoard">
     Score: <span id="score">0</span> | Streak: <span id="streak">0</span>
   </div>
-  <div id="question" class="question"></div>
+  <div id="question" class="question-display"></div>
   <input type="text" id="answerInput" readonly>
   <div id="feedback"></div>
   <div id="keypad"></div>
@@ -62,7 +62,7 @@
 <!-- ---------- Collections ---------- -->
 <div id="collection" class="screen hidden">
   <h2 class="category-title">My Collection</h2>
-  <div id="tokenCount" class="token-count">0</div>
+  <div>Tokens: <span id="tokenCount">0</span></div>
   <button onclick="buyPack()">Buy 3-Card Pack (15 tokens)</button>
   <div id="animalGrid" class="animal-grid"></div>
   <button class="backBtn" onclick="showScreen('menu')">Back</button>
@@ -75,7 +75,7 @@
   <button onclick="finishReveal()">Finish Reveal</button>
 </div>
 
-<!-- ---------- Settings / Accessibility ---------- -->
+<!-- ---------- Settings ---------- -->
 <div id="settings" class="screen hidden">
   <h2 class="category-title">Settings</h2>
   <div class="settings-group">
