@@ -7,28 +7,32 @@ canvas.height = window.innerHeight;
 let stars = [], planets = [], shootingStars = [];
 
 function initBackground() {
-  stars = Array.from({ length: 100 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 2,
+  // Stars
+  stars = Array.from({length:120}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*1.5 + 0.5,
     alpha: Math.random()
   }));
 
-  planets = Array.from({ length: 5 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: 30 + Math.random() * 30,
+  // Planets
+  planets = Array.from({length:5}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: 30 + Math.random()*40,
     color: `hsl(${Math.random()*360},70%,50%)`,
-    dx: (Math.random() - 0.5) * 0.3,
-    dy: (Math.random() - 0.5) * 0.3
+    dx: (Math.random()-0.5)*0.2,
+    dy: (Math.random()-0.5)*0.2,
+    highlight: Math.random()*0.5 + 0.3
   }));
 
-  shootingStars = Array.from({ length: 3 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height/2,
-    length: 20 + Math.random()*30,
-    speed: 4 + Math.random()*3,
-    active: Math.random() < 0.5
+  // Shooting stars
+  shootingStars = Array.from({length:4}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height/2,
+    length: 80 + Math.random()*40,
+    speed: 6 + Math.random()*4,
+    active: Math.random()<0.5
   }));
 }
 
@@ -39,7 +43,7 @@ function drawBackground() {
   // Stars
   stars.forEach(s => {
     ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
     ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
     ctx.fill();
     s.alpha += (Math.random()-0.5)*0.05;
@@ -47,33 +51,42 @@ function drawBackground() {
     if(s.alpha > 1) s.alpha=1;
   });
 
-  // Planets
+  // Planets with spherical shading
   planets.forEach(p => {
-    let grad = ctx.createRadialGradient(p.x-p.r/3,p.y-p.r/3,p.r/5,p.x,p.y,p.r);
-    grad.addColorStop(0,"#fff");
-    grad.addColorStop(1,p.color);
+    let grad = ctx.createRadialGradient(p.x - p.r/3, p.y - p.r/3, p.r*0.1, p.x, p.y, p.r);
+    grad.addColorStop(0, "rgba(255,255,255," + p.highlight + ")");
+    grad.addColorStop(1, p.color);
     ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
     ctx.fillStyle = grad;
     ctx.fill();
-    p.x += p.dx;
-    p.y += p.dy;
+
+    // Slight subtle shadow on planet edge
+    ctx.beginPath();
+    ctx.arc(p.x+2, p.y+2, p.r*0.9, 0, Math.PI*2);
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fill();
+
+    p.x += p.dx; p.y += p.dy;
     if(p.x<-p.r) p.x=canvas.width+p.r;
     if(p.x>canvas.width+p.r) p.x=-p.r;
     if(p.y<-p.r) p.y=canvas.height+p.r;
     if(p.y>canvas.height+p.r) p.y=-p.r;
   });
 
-  // Shooting Stars
+  // Shooting stars with fading tail
   shootingStars.forEach(s => {
     if(s.active){
-      ctx.strokeStyle="white";
+      let gradient = ctx.createLinearGradient(s.x, s.y, s.x - s.length, s.y + s.length);
+      gradient.addColorStop(0, "rgba(255,255,255,1)");
+      gradient.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(s.x,s.y);
+      ctx.moveTo(s.x, s.y);
       ctx.lineTo(s.x - s.length, s.y + s.length);
       ctx.stroke();
-      s.x += s.speed;
-      s.y += s.speed;
+      s.x += s.speed; s.y += s.speed;
       if(s.x>canvas.width || s.y>canvas.height){
         s.x = Math.random()*canvas.width/2;
         s.y = Math.random()*canvas.height/2;
@@ -87,6 +100,7 @@ function animate() {
   drawBackground();
   requestAnimationFrame(animate);
 }
+
 initBackground();
 animate();
 
