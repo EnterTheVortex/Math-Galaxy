@@ -2,84 +2,94 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Math Galaxy</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ---------- Space Background Canvas ---------- -->
+<!-- Canvas Background -->
 <canvas id="spaceCanvas"></canvas>
 
 <!-- ---------- Start Menu ---------- -->
 <div id="menu" class="screen active">
-  <h1>Math Galaxy</h1>
-  <button onclick="showScreen('gameModes')">Game Modes</button>
-  <button onclick="showScreen('collection')">Collections</button>
-  <button onclick="showScreen('settings')">Settings</button>
+  <h1 class="glow">Math Galaxy</h1>
+  <div class="menu-buttons">
+    <button onclick="showScreen('gameModes')">Game Modes</button>
+    <button onclick="showScreen('collection')">Collections</button>
+    <button onclick="showScreen('settings')">Settings</button>
+  </div>
 </div>
 
 <!-- ---------- Game Modes ---------- -->
 <div id="gameModes" class="screen hidden">
-  <h2>Choose a Category</h2>
-  <button onclick="chooseCategory('addition')">Addition Adventure</button>
-  <button onclick="chooseCategory('subtraction')">Subtraction Safari</button>
-  <button onclick="chooseCategory('multiplication')">Multiplication Mayhem</button>
-  <button onclick="chooseCategory('division')">Division Dash</button>
-  <button onclick="showScreen('menu')">Back</button>
+  <h2>Choose Category</h2>
+  <div class="menu-buttons">
+    <button onclick="chooseCategory('addition')">Addition Adventure</button>
+    <button onclick="chooseCategory('subtraction')">Subtraction Safari</button>
+    <button onclick="chooseCategory('multiplication')">Multiplication Mayhem</button>
+    <button onclick="chooseCategory('division')">Division Dash</button>
+  </div>
+  <button class="backBtn" onclick="showScreen('menu')">Back</button>
 </div>
 
-<!-- ---------- Mode Selection ---------- -->
+<!-- ---------- Mode Menu ---------- -->
 <div id="modeMenu" class="screen hidden">
-  <h2 id="modeTitle">Category</h2>
-  <button onclick="startGame('normal')">Normal Mode</button>
-  <button onclick="startGame('highscore')">Highscore Mode</button>
-  <button onclick="showScreen('gameModes')">Back</button>
+  <h2 id="modeTitle"></h2>
+  <div class="menu-buttons">
+    <button onclick="startGame('normal')">Normal Mode</button>
+    <button onclick="startGame('highscore')">High Score Mode</button>
+  </div>
+  <button class="backBtn" onclick="showScreen('gameModes')">Back</button>
 </div>
 
 <!-- ---------- Game Screen ---------- -->
 <div id="game" class="screen hidden">
-  <h2 id="gameTitle">Game</h2>
-  <div id="question">Question?</div>
-  <input type="text" id="answerInput" readonly>
-  <div id="keypad"></div>
-  <div id="feedback"></div>
-  <div id="scoreboard">
-    <span>Score: <span id="score">0</span></span>
-    <span>Streak: <span id="streak">0</span></span>
+  <h2 id="gameTitle"></h2>
+  <div id="timerBox">
+    Time Left: <span id="timer">60</span>s
   </div>
-  <div id="timerBox" class="hidden">Time: <span id="timer">60</span></div>
-  <button onclick="exitGame()">Exit</button>
+  <div id="scoreBoard">
+    Score: <span id="score">0</span> | Streak: <span id="streak">0</span>
+  </div>
+  <div id="question"></div>
+  <input type="text" id="answerInput" readonly>
+  <div id="feedback"></div>
+  <div id="keypad"></div>
+  <button class="backBtn" onclick="exitGame()">Exit</button>
 </div>
 
-<!-- ---------- Collection Screen ---------- -->
+<!-- ---------- Collections ---------- -->
 <div id="collection" class="screen hidden">
   <h2>My Collection</h2>
-  <div>Tokens: <span id="tokenCount">0</span></div>
-  <div id="animalGrid" class="collection-grid"></div>
+  <div id="tokenCount">0</div>
   <button onclick="buyPack()">Buy 3-Card Pack (15 tokens)</button>
-  <button onclick="showScreen('menu')">Back</button>
+  <div id="animalGrid" class="animal-grid"></div>
+  <button class="backBtn" onclick="showScreen('menu')">Back</button>
 </div>
 
-<!-- ---------- Pack Reveal Screen ---------- -->
+<!-- ---------- Pack Reveal ---------- -->
 <div id="packReveal" class="screen hidden">
-  <h2>Pack Reveal!</h2>
-  <div id="revealGrid" class="collection-grid"></div>
-  <button onclick="finishReveal()">Finish</button>
+  <h2>New Pack!</h2>
+  <div id="revealGrid" class="animal-grid"></div>
+  <button onclick="finishReveal()">Finish Reveal</button>
 </div>
 
-<!-- ---------- Settings Screen ---------- -->
+<!-- ---------- Settings / Accessibility ---------- -->
 <div id="settings" class="screen hidden">
   <h2>Settings</h2>
-  <h3>Color Schemes</h3>
-  <label><input type="checkbox" id="darkMode"> Dark Mode</label>
-  <label><input type="checkbox" id="contrastMode"> High Contrast</label>
-  <h3>Fonts</h3>
-  <label><input type="checkbox" id="largeFont"> Large Font</label>
-  <label><input type="checkbox" id="lexieFont"> Lexie Font</label>
-  <h3>Motion</h3>
-  <label><input type="checkbox" id="reduceMotion"> Reduce Motion</label>
-  <button onclick="showScreen('menu')">Back</button>
+  <div class="settings-group">
+    <label><input type="checkbox" id="darkMode"> Dark Mode</label>
+    <label><input type="checkbox" id="contrastMode"> High Contrast</label>
+  </div>
+  <div class="settings-group">
+    <label><input type="checkbox" id="largeFont"> Large Font</label>
+    <label><input type="checkbox" id="lexieFont"> Lexie Font</label>
+  </div>
+  <div class="settings-group">
+    <label><input type="checkbox" id="reduceMotion"> Reduce Motion</label>
+  </div>
+  <button class="backBtn" onclick="showScreen('menu')">Back</button>
 </div>
 
 <script src="script.js"></script>
