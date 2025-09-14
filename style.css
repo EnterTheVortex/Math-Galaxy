@@ -1,164 +1,236 @@
-/* General */
-body, html {
+/* ---------- General ---------- */
+body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  font-family: 'Arial', sans-serif;
   overflow: hidden;
-  font-family: 'Poppins', sans-serif;
-  background: #0a0a2a;
-  color: white;
+  background: black;
+  color: #fff;
+}
+
+.screen {
+  display: none;
+  padding: 10px;
   text-align: center;
 }
 
-/* Canvas background */
+.screen.active {
+  display: block;
+}
+
+/* ---------- Canvas ---------- */
 #spaceCanvas {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
   z-index: -1;
 }
 
-/* Pack Reveal Cards */
-.reveal-card {
-  width: 100px;
-  height: 140px;
-  perspective: 1000px;
-}
-.reveal-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-}
-.reveal-card.flip .reveal-inner { transform: rotateY(180deg); }
-.reveal-front, .reveal-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  backface-visibility: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  font-weight: bold;
-}
-.reveal-front {
-  background: #444;
-  color: #fff;
-}
-.reveal-back {
-  transform: rotateY(180deg);
-  flex-direction: column;
-  color: white;
-}
-.reveal-back span { font-size: 1rem; margin-top: 5px; }
-
-/* Screens */
-.screen {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-.screen.active { display: flex; }
-.hidden { display: none; }
-
-/* Titles */
-.title {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+/* ---------- Titles ---------- */
+h1, h2, h3 {
+  margin: 10px 0;
+  color: #FFD700;
+  text-shadow: 0 0 10px #FFD700;
 }
 
-/* Buttons */
-.menu-btn, .back-btn {
-  background: #2d6cdf;
-  border: none;
-  color: white;
-  padding: 14px 24px;
-  margin: 8px;
-  border-radius: 12px;
-  font-size: 1.2rem;
-  transition: transform 0.2s, background 0.3s;
-}
-.menu-btn:hover, .back-btn:hover { transform: scale(1.05); background: #1e4caf; }
-
-/* Game */
-#question {
-  font-size: 2rem;
-  margin: 20px;
-}
-#answerInput {
+/* ---------- Buttons ---------- */
+button {
   font-size: 1.5rem;
-  padding: 10px;
-  border-radius: 10px;
+  margin: 5px;
+  padding: 12px 25px;
   border: none;
-  margin-bottom: 10px;
-  width: 120px;
-  text-align: center;
+  border-radius: 12px;
+  cursor: pointer;
+  background: linear-gradient(45deg,#ff9800,#ffcc00);
+  color: #fff;
+  box-shadow: 0 4px #cc7a00;
+  transition: all 0.2s ease-in-out;
 }
 
-/* Keypad */
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px #cc7a00;
+}
+
+button:active {
+  transform: translateY(2px) scale(1);
+}
+
+/* ---------- Keypad ---------- */
 #keypad {
   display: grid;
-  grid-template-columns: repeat(3, 70px);
+  grid-template-columns: repeat(3, 60px);
   gap: 10px;
   justify-content: center;
   margin-top: 10px;
 }
+
 #keypad button {
-  padding: 15px;
-  font-size: 1.3rem;
-  border-radius: 10px;
-  border: none;
-  background: #4444aa;
-  color: white;
-  transition: transform 0.2s;
+  font-size: 1.4rem;
+  background: linear-gradient(45deg,#4caf50,#81c784);
 }
-#keypad button:active { transform: scale(0.9); }
 
-/* Stats */
-.stats { margin-top: 15px; }
+/* ---------- Question / Score ---------- */
+#question {
+  font-size: 2rem;
+  margin: 15px 0;
+  color: #00ffff;
+}
 
-/* Settings */
-.toggle {
-  margin: 10px;
+#scoreBox, #streakBox, #timerBox, #highScoreContainer {
+  margin: 10px 0;
   font-size: 1.2rem;
 }
-.toggle input { transform: scale(1.3); margin-left: 10px; }
 
-/* Collection */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  gap: 10px;
-  margin: 20px;
+/* ---------- Feedback ---------- */
+#feedback {
+  font-size: 1.5rem;
+  height: 30px;
+  margin: 10px 0;
 }
-.animal-card {
-  width: 90px;
-  height: 120px;
+
+/* ---------- Collection ---------- */
+#animalGrid, #revealGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 10px;
+  justify-items: center;
+  margin: 10px;
+}
+
+.animal-card, .reveal-card {
+  width: 80px;
+  height: 100px;
+  border-radius: 12px;
+  background: #444;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1rem;
+  perspective: 600px;
+}
+
+.animal-card.locked {
+  background: #222;
+  color: #666;
+}
+
+/* ---------- Flip Cards ---------- */
+.reveal-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.reveal-card.flip .reveal-inner {
+  transform: rotateY(180deg);
+}
+
+.reveal-front, .reveal-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.reveal-front {
+  background: #555;
+  color: #fff;
+}
+
+.reveal-back {
+  transform: rotateY(180deg);
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+/* ---------- Accessibility Toggles ---------- */
+.toggle-container {
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  color: white;
-  font-size: 0.9rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  margin: 10px 0;
+  font-size: 1rem;
 }
-.animal-card.locked {
-  background: #333;
-  color: #999;
-  font-size: 2rem;
-}
-.animal-card span { margin-top: 4px; }
 
-/* Accessibility Modes */
-.dark-mode { background: #000 !important; }
-.high-contrast { filter: contrast(1.5); }
-.large-font { font-size: 1.3em; }
-.lexie-font { font-family: 'Comic Sans MS', cursive, sans-serif; }
-.reduce-motion * { transition: none !important; animation: none !important; }
+.toggle-container label {
+  margin-left: 8px;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 24px;
+  display: inline-block;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 24px;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  button {
+    font-size: 1.2rem;
+    padding: 10px 18px;
+  }
+
+  #keypad {
+    grid-template-columns: repeat(3, 50px);
+    gap: 8px;
+  }
+
+  .animal-card, .reveal-card {
+    width: 60px;
+    height: 90px;
+    font-size: 0.9rem;
+  }
+
+  #question {
+    font-size: 1.5rem;
+  }
+
+  #scoreBox, #streakBox, #timerBox, #highScoreContainer {
+    font-size: 1rem;
+  }
+}
