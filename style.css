@@ -18,6 +18,43 @@ body, html {
   z-index: -1;
 }
 
+/* Pack Reveal Cards */
+.reveal-card {
+  width: 100px;
+  height: 140px;
+  perspective: 1000px;
+}
+.reveal-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+.reveal-card.flip .reveal-inner { transform: rotateY(180deg); }
+.reveal-front, .reveal-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.reveal-front {
+  background: #444;
+  color: #fff;
+}
+.reveal-back {
+  transform: rotateY(180deg);
+  flex-direction: column;
+  color: white;
+}
+.reveal-back span { font-size: 1rem; margin-top: 5px; }
+
 /* Screens */
 .screen {
   display: none;
