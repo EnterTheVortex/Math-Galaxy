@@ -1,3 +1,16 @@
+/* ---------- Screen Navigation ---------- */
+const screens = document.querySelectorAll(".screen");
+function showScreen(id){
+  screens.forEach(s => s.classList.add("hidden"));
+  const screen = document.getElementById(id);
+  if(screen){
+    screen.classList.remove("hidden");
+    screen.classList.add("active");
+  }
+  if(id === "game") document.body.classList.add("mobile-game");
+  else document.body.classList.remove("mobile-game");
+}
+
 /* ---------- Canvas Background ---------- */
 const canvas = document.getElementById("spaceCanvas");
 const ctx = canvas.getContext("2d");
@@ -5,7 +18,6 @@ canvas.width = innerWidth;
 canvas.height = innerHeight;
 
 let stars = [], planets = [], shootingStars = [];
-
 function initBackground() {
   stars = Array.from({length: 100}, () => ({
     x: Math.random() * canvas.width,
@@ -13,40 +25,37 @@ function initBackground() {
     r: Math.random() * 2,
     alpha: Math.random()
   }));
-
   planets = Array.from({length: 5}, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: 30 + Math.random() * 30,
+    r: 30 + Math.random()*30,
     color: `hsl(${Math.random()*360},70%,50%)`,
-    dx: (Math.random() - 0.5) * 0.3,
-    dy: (Math.random() - 0.5) * 0.3
+    dx: (Math.random()-0.5)*0.3,
+    dy: (Math.random()-0.5)*0.3
   }));
-
-  shootingStars = Array.from({length: 3}, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height/2,
+  shootingStars = Array.from({length:3}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height/2,
     length: 20 + Math.random()*30,
     speed: 4 + Math.random()*3,
-    active: Math.random() < 0.5
+    active: Math.random()<0.5
   }));
 }
-
 function drawBackground() {
   ctx.fillStyle = "#0b0c20";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  stars.forEach(s => {
+  stars.forEach(s=>{
     ctx.beginPath();
     ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
     ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
     ctx.fill();
     s.alpha += (Math.random()-0.5)*0.05;
-    if(s.alpha < 0.1) s.alpha=0.1;
-    if(s.alpha > 1) s.alpha=1;
+    if(s.alpha<0.1) s.alpha=0.1;
+    if(s.alpha>1) s.alpha=1;
   });
 
-  planets.forEach(p => {
+  planets.forEach(p=>{
     let grad = ctx.createRadialGradient(p.x-p.r/3,p.y-p.r/3,p.r/5,p.x,p.y,p.r);
     grad.addColorStop(0,"#fff");
     grad.addColorStop(1,p.color);
@@ -55,49 +64,36 @@ function drawBackground() {
     ctx.fillStyle = grad;
     ctx.fill();
 
-    p.x += p.dx;
-    p.y += p.dy;
+    p.x += p.dx; p.y += p.dy;
     if(p.x<-p.r) p.x=canvas.width+p.r;
     if(p.x>canvas.width+p.r) p.x=-p.r;
     if(p.y<-p.r) p.y=canvas.height+p.r;
     if(p.y>canvas.height+p.r) p.y=-p.r;
   });
 
-  shootingStars.forEach(s => {
+  shootingStars.forEach(s=>{
     if(s.active){
       ctx.strokeStyle="white";
       ctx.beginPath();
       ctx.moveTo(s.x,s.y);
       ctx.lineTo(s.x - s.length, s.y + s.length);
+      ctx.lineWidth = 2;
       ctx.stroke();
       s.x += s.speed;
       s.y += s.speed;
-      if(s.x > canvas.width || s.y > canvas.height) {
-        s.x = Math.random() * canvas.width/2;
-        s.y = Math.random() * canvas.height/2;
-        s.active = Math.random() < 0.5;
+      if(s.x>canvas.width || s.y>canvas.height){
+        s.x = Math.random()*canvas.width/2;
+        s.y = Math.random()*canvas.height/2;
+        s.active = Math.random()<0.5;
       }
-    } else if(Math.random() < 0.01) s.active=true;
+    } else if(Math.random()<0.01) s.active=true;
   });
 }
-
-function animate() {
-  drawBackground();
-  requestAnimationFrame(animate);
-}
-initBackground();
-animate();
-
-/* ---------- Screen Navigation ---------- */
-const screens = document.querySelectorAll(".screen");
-function showScreen(id){
-  screens.forEach(s => s.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-  document.getElementById(id).classList.add("active");
-}
+function animate() { drawBackground(); requestAnimationFrame(animate); }
+initBackground(); animate();
 
 /* ---------- Game Logic ---------- */
-let currentCategory="", mode="", score=0, streak=0, timer=60, timerInterval;
+let currentCategory="", mode="", score=0, streak=0, timer=60, timerInterval=0;
 let tokens=0, answered=0;
 
 const answerInput = document.getElementById("answerInput");
@@ -106,6 +102,7 @@ const scoreDisplay = document.getElementById("score");
 const streakDisplay = document.getElementById("streak");
 const timerDisplay = document.getElementById("timer");
 const timerBox = document.getElementById("timerBox");
+const categories = {addition:"+", subtraction:"-", multiplication:"×", division:"÷"};
 
 function chooseCategory(cat){
   currentCategory = cat;
@@ -114,32 +111,28 @@ function chooseCategory(cat){
 }
 
 function startGame(selectedMode){
-  mode = selectedMode;
-  score = 0; streak = 0; answered = 0;
-  scoreDisplay.innerText = 0;
-  streakDisplay.innerText = 0;
-  document.getElementById("gameTitle").innerText = `${currentCategory.toUpperCase()} - ${mode}`;
+  mode = selectedMode; score=0; streak=0; answered=0;
+  scoreDisplay.innerText=0; streakDisplay.innerText=0;
+  document.getElementById("gameTitle").innerText = `${currentCategory} - ${mode}`;
   showScreen("game");
 
-  if(mode === "highscore"){
-    timer = 60;
-    timerDisplay.innerText = timer;
+  if(mode==="highscore"){
+    timer=60; timerDisplay.innerText=timer;
     timerBox.classList.remove("hidden");
     timerInterval = setInterval(()=>{
-      timer--;
-      timerDisplay.innerText = timer;
-      if(timer <= 0){ clearInterval(timerInterval); endGame(); }
+      timer--; timerDisplay.innerText=timer;
+      if(timer<=0){ clearInterval(timerInterval); endGame(); }
     },1000);
   } else {
-    timerBox.classList.add("hidden");
+    timerBox.classList.add("hidden"); // hide timer for normal mode
   }
 
   generateQuestion();
 }
 
 function generateQuestion(){
-  let a=Math.floor(Math.random()*12)+1;
-  let b=Math.floor(Math.random()*12)+1;
+  let a = Math.floor(Math.random()*12)+1;
+  let b = Math.floor(Math.random()*12)+1;
   let q="", ans=0;
   switch(currentCategory){
     case "addition": q=`${a} + ${b}`; ans=a+b; break;
@@ -147,25 +140,26 @@ function generateQuestion(){
     case "multiplication": q=`${a} × ${b}`; ans=a*b; break;
     case "division": a=a*b; q=`${a} ÷ ${b}`; ans=a/b; break;
   }
-  document.getElementById("question").innerText = q;
-  answerInput.value = "";
-  answerInput.dataset.answer = ans;
-  feedback.innerText = "";
+  document.getElementById("question").innerText=q;
+  answerInput.value="";
+  answerInput.dataset.answer=ans;
+  feedback.innerText="";
 }
 
 function checkAnswer(userVal){
   let correct = parseInt(answerInput.dataset.answer);
   if(userVal === correct){
     score++; streak++; answered++;
-    scoreDisplay.innerText = score; streakDisplay.innerText = streak;
-    feedback.innerText = "✅ Correct!"; feedback.style.color="lightgreen";
-    if(answered % 15 === 0){ tokens+=5; saveProgress(); }
-    setTimeout(generateQuestion, 500);
+    scoreDisplay.innerText=score; streakDisplay.innerText=streak;
+    feedback.innerText="✅ Correct!"; feedback.style.color="lightgreen";
+
+    if(answered%15===0){ tokens+=5; saveProgress(); }
+    setTimeout(generateQuestion,500);
   } else {
-    streak=0; streakDisplay.innerText = streak;
-    feedback.innerText = "❌ Wrong!"; feedback.style.color="red";
+    streak=0; streakDisplay.innerText=streak;
+    feedback.innerText="❌ Wrong!"; feedback.style.color="red";
     answerInput.classList.add("shake");
-    setTimeout(()=>{ answerInput.classList.remove("shake"); answerInput.value=""; }, 400);
+    setTimeout(()=>{ answerInput.classList.remove("shake"); answerInput.value=""; },400);
   }
 }
 
@@ -182,32 +176,33 @@ function endGame(){
 
 /* ---------- Keypad ---------- */
 function buildKeypad(){
-  const keypad=document.getElementById("keypad");
+  const keypad = document.getElementById("keypad");
   keypad.innerHTML="";
   ["1","2","3","4","5","6","7","8","9","0","←","✔"].forEach(k=>{
-    let btn = document.createElement("button");
+    const btn = document.createElement("button");
     btn.innerText = k;
     btn.addEventListener("click", ()=>handleKey(k));
     keypad.appendChild(btn);
   });
 }
 function handleKey(k){
-  if(k==="←"){ answerInput.value = answerInput.value.slice(0,-1); return; }
+  if(k==="←"){ answerInput.value=answerInput.value.slice(0,-1); return; }
   if(k==="✔"){ checkAnswer(parseInt(answerInput.value)); return; }
   answerInput.value += k;
 }
 buildKeypad();
 
-document.addEventListener("keydown", e => {
+// Desktop keyboard support
+document.addEventListener("keydown", e=>{
   if(document.getElementById("game").classList.contains("hidden")) return;
-  if(e.key >= "0" && e.key <= "9") answerInput.value += e.key;
-  if(e.key==="Backspace") answerInput.value = answerInput.value.slice(0,-1);
+  if(e.key>="0" && e.key<="9") answerInput.value+=e.key;
+  if(e.key==="Backspace") answerInput.value=answerInput.value.slice(0,-1);
   if(e.key==="Enter") checkAnswer(parseInt(answerInput.value));
 });
 
 /* ---------- Collection ---------- */
 const animals=["Lion","Tiger","Elephant","Giraffe","Monkey","Panda","Kangaroo","Penguin","Zebra","Hippo","Rhino","Crocodile","Owl","Eagle","Shark","Dolphin","Whale","Bear","Wolf","Fox"];
-const animalCards = { 
+const animalCards = {
   "Lion":{img:"🦁",color:"linear-gradient(135deg,#f9d423,#ff4e50)"},
   "Tiger":{img:"🐯",color:"linear-gradient(135deg,#ff6a00,#ee0979)"},
   "Elephant":{img:"🐘",color:"linear-gradient(135deg,#a8c0ff,#3f2b96)"},
@@ -229,25 +224,22 @@ const animalCards = {
   "Wolf":{img:"🐺",color:"linear-gradient(135deg,#232526,#414345)"},
   "Fox":{img:"🦊",color:"linear-gradient(135deg,#f12711,#f5af19)"}
 };
-
-let collection = JSON.parse(localStorage.getItem("collection") || "[]");
-tokens = parseInt(localStorage.getItem("tokens") || "0");
+let collection = JSON.parse(localStorage.getItem("collection")||"[]");
+tokens = parseInt(localStorage.getItem("tokens")||"0");
 
 function saveProgress(){
   localStorage.setItem("collection", JSON.stringify(collection));
   localStorage.setItem("tokens", tokens);
   document.getElementById("tokenCount").innerText = tokens;
 }
-
 function renderCollection(){
   const grid = document.getElementById("animalGrid");
   grid.innerHTML="";
   animals.forEach(a=>{
-    let div = document.createElement("div");
+    const div = document.createElement("div");
     div.classList.add("animal-card");
-    if(!collection.includes(a)){
-      div.classList.add("locked"); div.innerText="❓";
-    } else {
+    if(!collection.includes(a)){ div.classList.add("locked"); div.innerText="❓"; }
+    else{
       div.style.background = animalCards[a].color;
       div.innerHTML = `<div style="font-size:2rem">${animalCards[a].img}</div><span>${a}</span>`;
     }
@@ -255,50 +247,40 @@ function renderCollection(){
   });
   document.getElementById("tokenCount").innerText = tokens;
 }
-
 function buyPack(){
-  if(tokens < 15){ alert("Not enough tokens!"); return; }
-  tokens -= 15;
-  let newCards = [];
+  if(tokens<15){ alert("Not enough tokens!"); return; }
+  tokens-=15;
+  let newCards=[];
   for(let i=0;i<3;i++){
-    let available = animals.filter(a => !collection.includes(a));
-    if(available.length === 0) break;
-    let rand = available[Math.floor(Math.random()*available.length)];
-    collection.push(rand);
-    newCards.push(rand);
+    const available = animals.filter(a=>!collection.includes(a));
+    if(available.length===0) break;
+    const rand = available[Math.floor(Math.random()*available.length)];
+    collection.push(rand); newCards.push(rand);
   }
-  saveProgress();
-  renderCollection();
-  showPackReveal(newCards);
+  saveProgress(); renderCollection(); showPackReveal(newCards);
 }
-
 function showPackReveal(cards){
   showScreen("packReveal");
   const grid = document.getElementById("revealGrid");
   grid.innerHTML="";
   cards.forEach((c,i)=>{
-    let cardDiv = document.createElement("div");
+    const cardDiv=document.createElement("div");
     cardDiv.classList.add("reveal-card");
-    let inner = document.createElement("div");
+    const inner=document.createElement("div");
     inner.classList.add("reveal-inner");
 
-    let front = document.createElement("div");
-    front.classList.add("reveal-front");
-    front.innerText="❓";
+    const front=document.createElement("div");
+    front.classList.add("reveal-front"); front.innerText="❓";
 
-    let back = document.createElement("div");
-    back.classList.add("reveal-back");
-    back.style.background = animalCards[c].color;
+    const back=document.createElement("div");
+    back.classList.add("reveal-back"); back.style.background=animalCards[c].color;
     back.innerHTML=`<div>${animalCards[c].img}</div><span>${c}</span>`;
 
-    inner.appendChild(front);
-    inner.appendChild(back);
-    cardDiv.appendChild(inner);
-    grid.appendChild(cardDiv);
+    inner.appendChild(front); inner.appendChild(back);
+    cardDiv.appendChild(inner); grid.appendChild(cardDiv);
     setTimeout(()=>{ cardDiv.classList.add("flip"); }, i*800);
   });
 }
-
 function finishReveal(){ showScreen("collection"); }
 
 /* ---------- Accessibility ---------- */
@@ -308,4 +290,7 @@ document.getElementById("largeFont").onchange = e => document.body.classList.tog
 document.getElementById("lexieFont").onchange = e => document.body.classList.toggle("lexie-font", e.target.checked);
 document.getElementById("reduceMotion").onchange = e => document.body.classList.toggle("reduce-motion", e.target.checked);
 
-document.addEventListener("DOMContentLoaded", ()=>{ renderCollection(); saveProgress(); });
+document.addEventListener("DOMContentLoaded", ()=>{
+  renderCollection();
+  saveProgress();
+});
