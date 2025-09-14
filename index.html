@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Math Galaxy</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <!-- Canvas Background -->
 <canvas id="spaceCanvas"></canvas>
 
-<!-- ---------- Start Menu ---------- -->
+<!-- ---------- Menu ---------- -->
 <div id="menu" class="screen active">
   <h1 class="glow">Math Galaxy</h1>
   <div class="menu-buttons">
@@ -22,7 +22,7 @@
 </div>
 
 <!-- ---------- Game Modes ---------- -->
-<div id="gameModes" class="screen hidden">
+<div id="gameModes" class="screen">
   <h2 class="screen-title">Choose Category</h2>
   <div class="menu-buttons">
     <button onclick="chooseCategory('addition')">Addition Adventure</button>
@@ -34,8 +34,8 @@
 </div>
 
 <!-- ---------- Mode Menu ---------- -->
-<div id="modeMenu" class="screen hidden">
-  <h2 class="screen-title" id="modeTitle"></h2>
+<div id="modeMenu" class="screen">
+  <h2 id="modeTitle" class="screen-title"></h2>
   <div class="menu-buttons">
     <button onclick="startGame('normal')">Normal Mode</button>
     <button onclick="startGame('highscore')">High Score Mode</button>
@@ -44,51 +44,70 @@
 </div>
 
 <!-- ---------- Game Screen ---------- -->
-<div id="game" class="screen hidden">
-  <h2 class="screen-title" id="gameTitle"></h2>
-  <div id="timerBox">
+<div id="game" class="screen">
+  <h2 id="gameTitle" class="screen-title"></h2>
+
+  <!-- timerBox is hidden by default; JS will show it only for highscore -->
+  <div id="timerBox" class="timer-hidden">
     Time Left: <span id="timer">60</span>s
   </div>
+
   <div id="scoreBoard">
-    Score: <span id="score">0</span> | Streak: <span id="streak">0</span> | High Score: <span id="highScore">0</span>
+    Score: <span id="score">0</span> |
+    Streak: <span id="streak">0</span> |
+    High Score: <span id="highScore">0</span>
   </div>
-  <div id="question" class="question-display"></div>
-  <input type="text" id="answerInput" readonly>
-  <div id="feedback"></div>
-  <div id="keypad"></div>
-  <button class="backBtn" onclick="exitGame()">Exit</button>
+
+  <div id="question" class="question-display">--</div>
+
+  <!-- readonly prevents mobile keyboard popping up; keypad will be used -->
+  <input id="answerInput" type="text" readonly class="answer-box" />
+
+  <div id="feedback" class="feedback"></div>
+
+  <div id="keypad" class="keypad"></div>
+
+  <div style="margin-top:12px;">
+    <button class="backBtn" onclick="exitGame()">Exit</button>
+  </div>
 </div>
 
 <!-- ---------- Collections ---------- -->
-<div id="collection" class="screen hidden">
+<div id="collection" class="screen">
   <h2 class="screen-title">My Collection</h2>
-  <div id="tokenCount" class="tokens">0 Tokens</div>
+  <div class="tokens" style="margin-bottom:8px">
+    Tokens: <span id="tokenCount">0</span>
+  </div>
   <button onclick="buyPack()">Buy 3-Card Pack (15 tokens)</button>
   <div id="animalGrid" class="animal-grid"></div>
   <button class="backBtn" onclick="showScreen('menu')">Back</button>
 </div>
 
 <!-- ---------- Pack Reveal ---------- -->
-<div id="packReveal" class="screen hidden">
+<div id="packReveal" class="screen">
   <h2 class="screen-title">New Pack!</h2>
   <div id="revealGrid" class="animal-grid"></div>
   <button onclick="finishReveal()">Finish Reveal</button>
 </div>
 
-<!-- ---------- Settings / Accessibility ---------- -->
-<div id="settings" class="screen hidden">
+<!-- ---------- Settings ---------- -->
+<div id="settings" class="screen">
   <h2 class="screen-title">Settings</h2>
+
   <div class="settings-group">
     <label><input type="checkbox" id="darkMode"> Dark Mode</label>
     <label><input type="checkbox" id="contrastMode"> High Contrast</label>
   </div>
+
   <div class="settings-group">
     <label><input type="checkbox" id="largeFont"> Large Font</label>
     <label><input type="checkbox" id="lexieFont"> Lexie Font</label>
   </div>
+
   <div class="settings-group">
     <label><input type="checkbox" id="reduceMotion"> Reduce Motion</label>
   </div>
+
   <button class="backBtn" onclick="showScreen('menu')">Back</button>
 </div>
 
