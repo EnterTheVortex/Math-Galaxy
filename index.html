@@ -1,89 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Math Galaxy</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Math Galaxy</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <canvas id="spaceBackground"></canvas>
 
-<div id="space-bg"></div>
+  <div id="app">
+    <!-- Start Menu -->
+    <div id="startMenu" class="page">
+      <h1 class="title">🌌 Math Galaxy</h1>
+      <button class="game-btn" onclick="openGameModes()">🎮 Game Modes</button>
+      <button class="game-btn" onclick="openSettings()">⚙️ Settings</button>
+      <button class="game-btn" onclick="openCollections()">📦 Collections</button>
+    </div>
 
-<!-- Start Menu -->
-<div id="startMenu">
-  <h1>Math Galaxy</h1>
-  <button class="game-btn" onclick="openGameModes()">Play Game</button>
-  <button class="game-btn" onclick="openSettings()">Settings</button>
-</div>
+    <!-- Game Modes -->
+    <div id="gameModes" class="page hidden">
+      <h2>Choose a Category</h2>
+      <button class="game-btn" onclick="openCategory('addition')">➕ Addition</button>
+      <button class="game-btn" onclick="openCategory('subtraction')">➖ Subtraction</button>
+      <button class="game-btn" onclick="openCategory('multiplication')">✖️ Multiplication</button>
+      <button class="game-btn" onclick="openCategory('division')">➗ Division</button>
+      <button class="game-btn" onclick="backToStartMenu()">⬅️ Back</button>
+    </div>
 
-<!-- Game Modes Menu -->
-<div id="gameModes" class="hidden">
-  <h2>Choose Category</h2>
-  <button class="game-btn" onclick="openModeMenu('addition')">Addition Adventure</button>
-  <button class="game-btn" onclick="openModeMenu('subtraction')">Subtraction Safari</button>
-  <button class="game-btn" onclick="openModeMenu('multiplication')">Multiplication Mayhem</button>
-  <button class="game-btn" onclick="openModeMenu('division')">Division Dash</button>
-  <button class="game-btn" onclick="backToStartMenu()">Back</button>
-</div>
+    <!-- Category Modes -->
+    <div id="categoryModes" class="page hidden">
+      <h2 id="categoryTitle"></h2>
+      <button class="game-btn" onclick="startGame('normal')">Normal Mode</button>
+      <button class="game-btn" onclick="startGame('highscore')">High Score Mode</button>
+      <button class="game-btn" onclick="backToGameModes()">⬅️ Back</button>
+    </div>
 
-<!-- Mode Menu -->
-<div id="modeMenu" class="hidden">
-  <h2 id="modeTitle">Category</h2>
-  <button class="game-btn" onclick="startGame(currentCategory,'normal')">Normal Mode</button>
-  <button class="game-btn" onclick="startGame(currentCategory,'highscore')">High Score Mode</button>
-  <button class="game-btn" onclick="goBackToMenu()">Back</button>
-</div>
+    <!-- Game Page -->
+    <div id="gamePage" class="page hidden">
+      <div id="gameHeader">
+        <h2 id="gameTitle"></h2>
+        <p id="timer" class="hidden">⏱️ 60s</p>
+        <p>Score: <span id="score">0</span></p>
+        <p class="hidden" id="highScoreWrapper">🏆 High Score: <span id="highScore">0</span></p>
+        <p>Streak: <span id="streak">0</span></p>
+      </div>
+      <div id="questionContainer">
+        <p id="question"></p>
+        <input id="answerInput" type="text" inputmode="none" readonly>
+        <div id="keypad" class="keypad"></div>
+      </div>
+      <p id="feedback"></p>
+      <button class="game-btn" onclick="exitGame()">⬅️ Exit</button>
+    </div>
 
-<!-- Game -->
-<div id="game" class="hidden">
-  <h2 id="categoryTitle">Category</h2>
-  <div id="timerContainer" class="hidden">Time: <span id="timer">60</span>s</div>
-  <div id="highScoreContainer" class="hidden">High Score: <span id="highScore">0</span></div>
-  <div id="scoreboard">Score: <span id="score">0</span> | Streak: <span id="streak">0</span></div>
-  <div id="question">Question</div>
-  <input type="text" id="answer" readonly>
-  <div id="feedback"></div>
-  <div id="keypad" class="hidden"></div>
-  <button class="game-btn" id="exitBtn">Exit</button>
-</div>
+    <!-- Collections Page -->
+    <div id="collections" class="page hidden">
+      <h2>📦 My Collection</h2>
+      <p>Tokens: <span id="tokenCount">0</span></p>
+      <button class="game-btn" id="buyPackBtn" onclick="buyPack()">Buy Pack (15 tokens)</button>
+      <div id="animalGrid" class="animal-grid"></div>
+      <button class="game-btn" onclick="backToStartMenu()">⬅️ Back</button>
+    </div>
 
-<!-- Settings -->
-<div id="settings" class="hidden">
-  <h2>Settings</h2>
-  <div class="toggle-setting">
-    <label>Dark Mode
-      <input type="checkbox" id="darkToggle">
-      <span class="slider"></span>
-    </label>
+    <!-- Settings Page -->
+    <div id="settings" class="page hidden">
+      <h2>⚙️ Settings</h2>
+
+      <div class="setting">
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode(this.checked)">
+          <span class="slider"></span>
+        </label>
+        Dark Mode
+      </div>
+
+      <div class="setting">
+        <label class="switch">
+          <input type="checkbox" id="contrastToggle" onchange="toggleContrast(this.checked)">
+          <span class="slider"></span>
+        </label>
+        High Contrast
+      </div>
+
+      <div class="setting">
+        <label class="switch">
+          <input type="checkbox" id="largeFontToggle" onchange="toggleLargeFont(this.checked)">
+          <span class="slider"></span>
+        </label>
+        Large Font
+      </div>
+
+      <div class="setting">
+        <label class="switch">
+          <input type="checkbox" id="dyslexicFontToggle" onchange="toggleDyslexicFont(this.checked)">
+          <span class="slider"></span>
+        </label>
+        Lexie Font
+      </div>
+
+      <div class="setting">
+        <label class="switch">
+          <input type="checkbox" id="motionToggle" onchange="toggleMotion(this.checked)">
+          <span class="slider"></span>
+        </label>
+        Reduce Motion
+      </div>
+
+      <button class="game-btn" onclick="backToStartMenu()">⬅️ Back</button>
+    </div>
   </div>
-  <div class="toggle-setting">
-    <label>High Contrast
-      <input type="checkbox" id="contrastToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
-  <div class="toggle-setting">
-    <label>Large Font
-      <input type="checkbox" id="largeFontToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
-  <div class="toggle-setting">
-    <label>Lexie Font
-      <input type="checkbox" id="lexieToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
-  <div class="toggle-setting">
-    <label>Reduce Motion
-      <input type="checkbox" id="motionToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
-  <button class="game-btn" onclick="backToGameModes()">Back</button>
-</div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
