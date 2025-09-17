@@ -78,9 +78,14 @@
   <div class="tokens" style="margin-bottom:8px">
     Tokens: <span id="tokenCount">0</span>
   </div>
-  <button onclick="buyPack()">Buy 3-Card Pack (15 tokens)</button>
+
+  <!-- Buy + Back buttons together -->
+  <div class="collection-actions">
+    <button onclick="buyPack()">Buy 3-Card Pack (15 tokens)</button>
+    <button class="backBtn" onclick="showScreen('menu')">Back</button>
+  </div>
+
   <div id="animalGrid" class="animal-grid"></div>
-  <button class="backBtn" onclick="showScreen('menu')">Back</button>
 </div>
 
 <!-- ---------- Pack Reveal ---------- -->
