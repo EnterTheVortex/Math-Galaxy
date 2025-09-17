@@ -112,6 +112,26 @@ body.reduce-motion * { animation:none !important; transition:none !important; }
 /* canvas / bg */
 canvas#spaceCanvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
 
+/* collection actions row */
+.collection-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;        /* space between Buy and Back buttons */
+  margin-bottom: 14px;
+  flex-wrap: wrap;  /* stack nicely on small screens */
+}
+
+.collection-actions button {
+  flex: 1 1 auto;
+  max-width: 220px;
+}
+
+.collection-actions .backBtn {
+  flex: 0 1 120px;   /* make back button a bit smaller */
+  font-size: 0.95rem;
+  padding: 10px 18px;
+}
+
 /* responsive */
 @media (max-width: 600px) {
   .glow { font-size:2.1rem; }
