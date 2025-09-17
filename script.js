@@ -223,7 +223,14 @@ document.addEventListener('keydown', (e) => {
 
 
 // ----- collection / tokens / packs -----
-const animals = ["Lion","Tiger","Elephant","Giraffe","Monkey","Panda","Kangaroo","Penguin","Zebra","Hippo","Rhino","Crocodile","Owl","Eagle","Shark","Dolphin","Whale","Bear","Wolf","Fox"];
+const animals = [
+  "Lion","Tiger","Elephant","Giraffe","Monkey","Panda","Kangaroo","Penguin","Zebra","Hippo",
+  "Rhino","Crocodile","Owl","Eagle","Shark","Dolphin","Whale","Bear","Wolf","Fox",
+  // NEW ANIMALS
+  "Dog","Cat","Horse","Rabbit","Deer","Koala","Parrot","Flamingo","Peacock","Octopus",
+  "Butterfly","Seal","Otter","Hedgehog","Raccoon","Badger","Swan","Duck","Frog","Turtle"
+];
+
 const animalCards = {
   "Lion":{img:"🦁", color:"linear-gradient(135deg,#f9d423,#ff4e50)"},
   "Tiger":{img:"🐯", color:"linear-gradient(135deg,#ff6a00,#ee0979)"},
@@ -244,7 +251,28 @@ const animalCards = {
   "Whale":{img:"🐋", color:"linear-gradient(135deg,#83a4d4,#b6fbff)"},
   "Bear":{img:"🐻", color:"linear-gradient(135deg,#5d4157,#a8caba)"},
   "Wolf":{img:"🐺", color:"linear-gradient(135deg,#232526,#414345)"},
-  "Fox":{img:"🦊", color:"linear-gradient(135deg,#f12711,#f5af19)"}
+  "Fox":{img:"🦊", color:"linear-gradient(135deg,#f12711,#f5af19)"},
+  // NEW ANIMALS
+  "Dog":{img:"🐶", color:"linear-gradient(135deg,#fceabb,#f8b500)"},
+  "Cat":{img:"🐱", color:"linear-gradient(135deg,#ffecd2,#fcb69f)"},
+  "Horse":{img:"🐴", color:"linear-gradient(135deg,#b79891,#94716b)"},
+  "Rabbit":{img:"🐰", color:"linear-gradient(135deg,#fbc2eb,#a6c1ee)"},
+  "Deer":{img:"🦌", color:"linear-gradient(135deg,#c79081,#dfa579)"},
+  "Koala":{img:"🐨", color:"linear-gradient(135deg,#d3cce3,#e9e4f0)"},
+  "Parrot":{img:"🦜", color:"linear-gradient(135deg,#ff9966,#ff5e62)"},
+  "Flamingo":{img:"🦩", color:"linear-gradient(135deg,#f857a6,#ff5858)"},
+  "Peacock":{img:"🦚", color:"linear-gradient(135deg,#1a2a6c,#b21f1f,#fdbb2d)"},
+  "Octopus":{img:"🐙", color:"linear-gradient(135deg,#a18cd1,#fbc2eb)"},
+  "Butterfly":{img:"🦋", color:"linear-gradient(135deg,#00c6ff,#0072ff)"},
+  "Seal":{img:"🦭", color:"linear-gradient(135deg,#83a4d4,#b6fbff)"},
+  "Otter":{img:"🦦", color:"linear-gradient(135deg,#ffd89b,#19547b)"},
+  "Hedgehog":{img:"🦔", color:"linear-gradient(135deg,#8e9eab,#eef2f3)"},
+  "Raccoon":{img:"🦝", color:"linear-gradient(135deg,#606c88,#3f4c6b)"},
+  "Badger":{img:"🦡", color:"linear-gradient(135deg,#e0eafc,#cfdef3)"},
+  "Swan":{img:"🦢", color:"linear-gradient(135deg,#bdc3c7,#2c3e50)"},
+  "Duck":{img:"🦆", color:"linear-gradient(135deg,#56ab2f,#a8e063)"},
+  "Frog":{img:"🐸", color:"linear-gradient(135deg,#76b852,#8dc26f)"},
+  "Turtle":{img:"🐢", color:"linear-gradient(135deg,#43cea2,#185a9d)"}
 };
 
 function saveProgress(){
